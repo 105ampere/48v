@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>앱도미널 크런치 사용법 · Matrix Ultra</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E8EBED;--panel:#F6F7F8;--ink:#1A2228;--sub:#55616B;--line:#C7CDD2;--steel:#7D8891;--pad:#4E5963;--body:#2C5A73;--figure:#B3C4CF;--sig:#E8800F;--sig-ink:#9A4F00;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14191D;--panel:#1D2429;--ink:#E6EAED;--sub:#9AA6AF;--line:#323C43;--steel:#6E7A83;--pad:#3E4952;--body:#6FA8C7;--figure:#9DB3C2;--sig:#F59A35;--sig-ink:#F7B163}}
+:root[data-theme="dark"]{--bg:#14191D;--panel:#1D2429;--ink:#E6EAED;--sub:#9AA6AF;--line:#323C43;--steel:#6E7A83;--pad:#3E4952;--body:#6FA8C7;--figure:#9DB3C2;--sig:#F59A35;--sig-ink:#F7B163}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;font-size:16px;line-height:1.7;word-break:keep-all}
+main{max-width:680px;margin:0 auto;padding:28px 20px 56px}
+h1{font-size:clamp(30px,8vw,44px);line-height:1.15;font-weight:700;letter-spacing:-0.02em;margin:0 0 8px}
+.model{color:var(--sub);font-size:15px;margin:0 0 24px}
+h2{font-size:21px;font-weight:700;letter-spacing:-0.01em;margin:34px 0 12px;padding-top:14px;border-top:3px solid var(--ink)}
+p{margin:0 0 12px}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.view{position:relative}
+.lbl{position:absolute;font-size:12px;color:var(--sub);background:var(--panel);padding:1px 6px;border-radius:6px;border:1px solid var(--line);pointer-events:none;white-space:nowrap;transform:translate(10px,-50%)}
+.lbl.hot{background:var(--sig);color:#1A1205;border-color:var(--sig);font-weight:500}
+.cues{display:grid;gap:10px}
+.cuebtn{display:grid;grid-template-columns:52px 1fr auto;align-items:center;gap:12px;width:100%;text-align:left;padding:16px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel);min-height:auto}
+.cuebtn .n{font-size:34px;font-weight:700;line-height:1;color:var(--sig-ink)}
+.cuebtn .h{display:block;font-size:20px;font-weight:700;line-height:1.3}
+.cuebtn .s{display:block;font-size:14px;color:var(--sub);line-height:1.5;margin-top:2px}
+.cuebtn .go{font-size:13px;color:var(--sub);white-space:nowrap}
+.cuebtn.act{border-color:var(--ink);box-shadow:inset 4px 0 0 var(--sig)}
+.chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.chips button{padding:12px 6px;font-weight:500}
+.chips button[aria-pressed="true"]{background:var(--sig);border-color:var(--sig);color:#1A1205}
+.say{margin-top:10px;padding:14px;border-radius:10px;background:var(--panel);border:1px solid var(--line);font-size:16px;min-height:76px}
+.say b{display:block;font-size:13px;color:var(--sig-ink);font-weight:500}
+.xs{list-style:none;padding:0;margin:0 0 12px;display:grid;gap:8px}
+.xs li{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:14px;line-height:1.45}
+.xs li span{padding:10px 12px}
+.xs li span:first-child{color:var(--sub)}
+.xs li span:last-child{background:var(--panel);font-weight:500}
+.xs li span:first-child::before{content:"✕ ";color:var(--sig-ink);font-weight:700}
+.xs li span:last-child::before{content:"✓ ";font-weight:700}
+.wide{width:100%;font-weight:500}
+
+.sheet{border:1px solid var(--line);border-radius:12px;background:var(--panel);overflow:hidden}
+.grp{margin:0;padding:8px 12px 6px;font-size:12px;font-weight:500;color:var(--sub);background:var(--bg);border-bottom:1px solid var(--line)}
+.grp:not(:first-child){border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:44px 1fr;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-radius:0;background:transparent;padding:10px 12px;min-height:48px;font-size:15px;line-height:1.45}
+.row+.row{border-top:1px solid var(--line)}
+.row .k{font-size:13px;font-weight:700;color:var(--sig-ink)}
+.row .v strong{font-weight:700}
+.row .ar{font-size:11px;font-weight:500;color:var(--sub);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.row,.xs li{opacity:0;transform:translateY(10px);transition:opacity .55s cubic-bezier(.2,.7,.2,1),transform .55s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0ms)}
+.in .row,.in li{opacity:1;transform:none}
+.tw{transition:color .25s}
+.tw.now{color:var(--sig-ink)}
+.tbar{display:flex;gap:3px;margin-top:6px;height:4px}
+.tbar i{display:block;height:100%;background:var(--line);border-radius:2px;overflow:hidden}
+.tbar i:nth-child(1),.tbar i:nth-child(2){flex:1}.tbar i:nth-child(3){flex:3}
+.tbar b{display:block;height:100%;width:0;background:var(--sig)}
+@media (prefers-reduced-motion:reduce){.row,.xs li{opacity:1;transform:none;transition:none}}
+.anat{display:grid;grid-template-columns:minmax(0,44%) 1fr;gap:16px;align-items:center;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--panel);opacity:0;transition:opacity .6s}
+.anat.in{opacity:1}
+.anat svg{width:100%;height:auto;display:block;overflow:visible}
+:root{--musc:#6F84A3;--coral:#DE6667;--skin:#FFFFFF;--skinline:#B9C0C6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--musc:#6A7E9C;--coral:#E2706F;--skin:#252D33;--skinline:#5E6971}}
+:root[data-theme="dark"]{--musc:#6A7E9C;--coral:#E2706F;--skin:#252D33;--skinline:#5E6971}
+#anatSvg .sil{fill:var(--skin);stroke:var(--skinline);stroke-width:1;stroke-linejoin:round}
+#anatSvg .mass path,#anatSvg #mass path{fill:var(--musc);stroke:var(--musc);stroke-width:1.2;stroke-linejoin:round}
+#anatSvg .ra{fill:var(--coral);fill-opacity:var(--rao,.9);stroke:var(--coral);stroke-opacity:var(--rao,.9);stroke-width:1}
+#anatSvg .ob{fill:none}
+#anatSvg .lines path,#anatSvg #ln path{fill:none;stroke:var(--skin);stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+#anatSvg .sk path{fill:none;stroke:var(--skinline);stroke-width:.8;stroke-linecap:round}
+#anatSvg .head{fill:var(--skin);stroke:var(--skinline);stroke-width:1}
+.legend>div{margin-bottom:14px}
+.legend strong{font-weight:700;margin-right:6px}
+.legend em{font-style:normal;font-size:12px;color:var(--sub)}
+.legend p{margin:2px 0 0;font-size:14px;color:var(--sub);line-height:1.5}
+.sw{display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--coral);margin-right:6px;vertical-align:1px}
+.sw.lt{background:var(--musc)}
+.live{margin:0;font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums}
+.tag{position:absolute;left:12px;top:12px;background:var(--sig);color:#1A1205;font-size:13px;font-weight:500;padding:4px 10px;border-radius:6px}
+.fb{padding:40px 16px;text-align:center;color:var(--sub)}
+canvas{width:100%;height:360px;display:block;touch-action:none;cursor:grab}
+.phases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line)}
+.phase{padding:10px 12px;font-size:13px;line-height:1.45;color:var(--sub);border-right:1px solid var(--line);transition:background .2s,color .2s}
+.phase:last-child{border-right:0}
+.phase b{display:block;font-size:12px;font-weight:500}
+.phase.on{background:var(--ink);color:var(--bg)}
+.phase.bad{background:var(--sig);color:#1A1205}
+.controls{display:flex;flex-wrap:wrap;gap:8px;padding:12px;border-top:1px solid var(--line)}
+button{font:inherit;font-size:14px;color:var(--ink);background:transparent;border:1px solid var(--steel);border-radius:8px;padding:8px 14px;min-height:40px;cursor:pointer}
+button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+a.ytbtn{font-size:14px;font-weight:500;color:#FFFFFF;background:#C4302B;border:1px solid #C4302B;border-radius:8px;padding:8px 14px;min-height:40px;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+a.ytbtn:hover{background:#A82822;border-color:#A82822}
+a.ytbtn:focus-visible,button:focus-visible{outline:3px solid var(--sig);outline-offset:2px}
+.hint{font-size:13px;color:var(--sub);margin:8px 2px 0}
+ol.steps{list-style:none;counter-reset:s;padding:0;margin:0}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:44px 1fr;gap:4px 12px;padding:14px 0;border-bottom:1px solid var(--line)}
+ol.steps li::before{content:counter(s);font-size:28px;font-weight:700;line-height:1.1;color:var(--sig-ink)}
+ol.steps strong{display:block;font-weight:700}
+.cue{display:grid;gap:10px}
+.cue div{padding:12px 14px;background:var(--panel);border-left:4px solid var(--body)}
+.cue strong{display:block}
+ul.bad{list-style:none;padding:0;margin:0}
+ul.bad li{padding:12px 0 12px 28px;border-bottom:1px solid var(--line);position:relative}
+ul.bad li::before{content:"✕";position:absolute;left:4px;top:12px;color:var(--sig-ink);font-weight:700}
+.routine{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.routine div{background:var(--panel);padding:14px 10px;text-align:center}
+.routine span{display:block;font-size:26px;font-weight:700;line-height:1.2}
+.routine small{color:var(--sub);font-size:13px}
+.note{font-size:14px;color:var(--sub);margin-top:32px}
+@media (max-width:420px){.phase{font-size:12px;padding:8px}canvas{height:320px}}
+</style>
+</head>
+<body>
+<main>
+<h1>앱도미널 크런치, 혼자서 제대로</h1>
+<p class="model">Matrix Ultra Abdominal Crunch 기구 사용 가이드</p>
+
+<div class="stage">
+<div class="view" id="view">
+<canvas id="cv" aria-label="기구에 앉아 복부를 말아 크런치하는 동작의 3D 시뮬레이션. 드래그해서 회전할 수 있습니다." role="img"></canvas>
+<span class="lbl" id="l0">시트 높이 핀</span><span class="lbl" id="l1">발 고정 패드</span><span class="lbl" id="l2">무게</span>
+<div class="tag" id="badTag" hidden>잘못된 예: 고관절로 숙이고 팔로 당김</div>
+<div class="fb" id="fb" hidden>3D 화면을 불러오지 못했습니다. 아래 설명을 참고하세요.</div>
+</div>
+<div class="phases" id="phases">
+<div class="phase" data-i="0"><b>1. 말기</b>숨 내쉬며 갈비뼈를 골반 쪽으로</div>
+<div class="phase" data-i="1"><b>2. 정지</b>1초, 복부 쥐어짜기</div>
+<div class="phase" data-i="2"><b>3. 복귀</b>3초 천천히</div>
+</div>
+<div class="controls">
+<button id="bPlay" aria-pressed="false">일시정지</button>
+<button id="bBad" aria-pressed="false">흔한 실수 비교</button>
+<button id="bSide">측면</button>
+<button id="bObl">사선</button>
+<a class="ytbtn" href="https://youtu.be/HFspzTiRX5w" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M8 5v14l11-7z"/></svg>실제 시연영상 (YouTube)</a>
+</div>
+</div>
+<p class="hint">드래그하면 시점이 돌아갑니다.</p>
+
+<h2>핵심 정리</h2>
+<div class="sheet">
+<div class="row" style="--d:60ms"><span class="k">세팅</span><span class="v">팔꿈치가 패드 중앙에 오는 높이, 발목은 롤러 아래</span></div>
+<div class="row" style="--d:120ms"><span class="k">힘</span><span class="v">손 말고 <strong>팔꿈치로 누르기</strong></span></div>
+<div class="row" style="--d:180ms"><span class="k">동작</span><span class="v">엉덩이 말고 <strong>명치를 접기</strong></span></div>
+<div class="row" style="--d:240ms"><span class="k">템포</span><span class="v"><span class="tw" data-i="0">말기 1초</span> → <span class="tw" data-i="1">정지 1초</span> → <span class="tw" data-i="2">복귀 3초</span><span class="tbar" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i></span></span></div>
+</div>
+
+<h2>어디가 발달하나</h2>
+<div class="anat" id="anat">
+<svg viewBox="0 0 200 446" role="img" aria-label="정면 근육 모형. 배 앞쪽 복직근이 주로, 옆구리 복사근이 보조로 수축합니다." id="anatSvg">
+<defs>
+<g id="mass">
+<path d="M100 70 Q108 66 116 68 Q138 71 151 77 Q162 83 163 100 Q168 130 172 165 Q176 185 178 202 L165 205 Q160 186 155 168 Q150 140 140 114 Q136 140 132 172 Q138 186 141 198 Q122 212 100 223 Z"/>
+<path d="M142 201 Q150 224 146 252 Q145 280 138 298 Q127 303 116 298 Q110 291 109 280 Q105 262 104 240 Q103 231 103 227 Q123 216 142 201 Z"/>
+<path d="M110 324 Q117 329 118 350 Q118 368 113 381 Q107 360 110 324 Z"/>
+<path d="M121 317 Q128 323 129 346 Q129 372 125 393 L121 393 Q119 360 121 317 Z"/>
+<path d="M132 315 Q141 329 140 352 Q138 370 133 381 Q131 350 132 315 Z"/>
+</g>
+<g id="tgt">
+<path class="ob" d="M122 125 Q131 118 140 115 Q137 140 133 170 Q137 184 140 196 Q122 210 104 219 Q113 210 119 190 Q124 160 122 125 Z"/>
+<path class="ra" d="M100 121 Q114 120 121 124 Q124 160 119 190 Q112 210 100 220 Z"/>
+</g>
+<g id="ln">
+<path d="M104 74 Q123 70 145 77"/>
+<path d="M144 78 Q139 93 147 106"/>
+<path d="M101 118 Q118 125 132 119 Q142 113 147 101"/>
+<path d="M148 80 Q160 87 162 104"/>
+<path d="M147 107 Q152 118 158 125"/>
+<path d="M152 121 Q158 142 160 166"/>
+<path d="M159 113 Q166 134 168 160"/>
+<path d="M157 168 Q165 165 172 170"/>
+<path d="M160 175 Q168 187 176 202"/>
+<path d="M166 173 Q173 185 179 198"/>
+<path d="M157 183 Q163 195 168 205"/>
+<path d="M140 116 L131 124"/><path d="M139 127 L130 134"/><path d="M137 138 L129 144"/><path d="M136 149 L129 154"/>
+<path d="M141 112 Q137 140 133 170 Q137 184 140 196"/>
+<path d="M100 121 Q114 120 121 124 Q124 160 119 190 Q112 210 100 220"/>
+<path d="M100 140 Q112 134 122.5 138"/><path d="M100 157 Q112 152 123 155"/><path d="M100 175 Q111 171 122 173"/>
+<path d="M141 206 Q125 246 112 291"/>
+<path d="M128 214 Q135 252 128 296"/>
+<path d="M144 230 Q147 264 136 296"/>
+<path d="M106 233 Q113 256 110 282"/>
+<path d="M114 263 Q123 281 120 298"/>
+</g>
+</defs>
+<path class="sil" d="M100 50 L107 50 Q109 62 116 66 Q138 70 152 76 Q165 82 165 100 Q170 130 174 165 Q178 185 180 203 Q192 214 197 232 Q198 239 193 238 L186 230 Q190 248 192 260 Q191 267 185 265 Q179 256 175 246 Q173 259 169 265 Q164 266 165 257 Q166 240 164 222 Q162 212 162 206 Q158 186 155 168 Q150 140 140 112 Q136 140 132 172 Q140 188 143 205 Q151 226 148 252 Q146 280 139 300 Q141 311 138 321 Q142 350 137 381 L132 398 Q135 412 144 427 Q146 438 136 440 L117 440 Q112 421 116 402 L113 392 Q108 360 111 324 Q108 313 110 300 Q105 270 104 240 Q102 229 100 227 Q98 229 96 240 Q95 270 90 300 Q92 313 89 324 Q92 360 87 392 L84 402 Q88 421 83 440 L64 440 Q54 438 56 427 Q65 412 68 398 L63 381 Q58 350 62 321 Q59 311 61 300 Q54 280 52 252 Q49 226 57 205 Q60 188 68 172 Q64 140 60 112 Q50 140 45 168 Q42 186 38 206 Q38 212 36 222 Q34 240 35 257 Q36 266 31 265 Q27 259 25 246 Q21 256 15 265 Q9 267 8 260 Q10 248 14 230 L7 238 Q2 239 3 232 Q8 214 20 203 Q22 185 26 165 Q30 130 35 100 Q35 82 48 76 Q62 70 84 66 Q91 62 93 50 L100 50 Z"/>
+<g class="mass"><use href="#mass"/><use href="#mass" transform="translate(200 0) scale(-1 1)"/></g>
+<use href="#tgt"/><use href="#tgt" transform="translate(200 0) scale(-1 1)"/>
+<g class="lines"><path d="M100 78 L100 221"/><use href="#ln"/><use href="#ln" transform="translate(200 0) scale(-1 1)"/></g>
+<g class="sk"><path d="M95 54 Q93 62 90 68 M105 54 Q107 62 110 68 M98 60 L99 66 M102 60 L101 66"/><path d="M176 232 L182 258 M171 236 L172 262"/><path d="M24 232 L18 258 M29 236 L28 262"/></g>
+<ellipse class="head" cx="100" cy="28" rx="17" ry="24"/>
+</svg>
+<div class="legend">
+<div><span class="sw"></span><strong>복직근</strong><em>주로 발달</em><p>배 앞쪽 세로 근육. 상체를 말 때 수축해요.</p></div>
+<div><span class="sw lt"></span><strong>복사근</strong><em>보조</em><p>옆구리 근육. 말 때 몸통을 함께 잡아줘요.</p></div>
+<p class="live" id="live">수축 0%</p>
+</div>
+</div>
+
+<h2>추천 횟수와 시간</h2>
+<div class="routine">
+<div><span>12~15</span><small>회</small></div>
+<div><span>3</span><small>세트</small></div>
+<div><span>60초</span><small>세트 간 휴식</small></div>
+<div><span>주 2~3</span><small>회, 하루 쉬고</small></div>
+</div>
+<p class="hint">1회 약 5초, 1세트 약 1분, 전체 약 5분이면 끝나요.</p>
+<p class="note">허리가 아프면 무게와 범위를 줄이세요.</p>
+</main>
+
+<script>
+(function(){
+const cv=document.getElementById('cv');
+const gl=cv.getContext('webgl',{antialias:true,alpha:true,stencil:true,premultipliedAlpha:false});
+if(!gl){cv.hidden=true;document.getElementById('fb').hidden=false;return;}
+const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+const st={yaw:-0.75,pitch:0.3,play:!reduce,bad:false};
+let el=reduce?1.5:0,last=performance.now();
+function sh(t,s){const x=gl.createShader(t);gl.shaderSource(x,s);gl.compileShader(x);return x;}
+const pg=gl.createProgram();
+gl.attachShader(pg,sh(gl.VERTEX_SHADER,'attribute vec3 aP,aN;uniform mat4 uM,uVP;uniform mat3 uN;varying vec3 vN,vW;void main(){vec4 w=uM*vec4(aP,1.);vW=w.xyz;vN=uN*aN;gl_Position=uVP*w;}'));
+gl.attachShader(pg,sh(gl.FRAGMENT_SHADER,'precision mediump float;varying vec3 vN,vW;uniform vec3 uC,uEye,uL;uniform float uE,uSp,uSh,uA;void main(){if(uSh>.5){gl_FragColor=vec4(0.,0.,0.,uA);return;}vec3 n=normalize(vN);vec3 v=normalize(uEye-vW);if(dot(n,v)<0.)n=-n;float hemi=mix(.35,1.,n.y*.5+.5);float d=max(dot(n,uL),0.);float r=max(dot(n,normalize(vec3(-2.,1.8,-1.5))),0.);vec3 h=normalize(uL+v);float s=pow(max(dot(n,h),0.),40.)*uSp;vec3 c=uC*(hemi*.62+d*.7+r*.25)+vec3(s)+uC*uE;c+=pow(1.-max(dot(n,v),0.),3.)*.1;gl_FragColor=vec4(pow(c,vec3(1./2.2)),uA);}'));
+gl.linkProgram(pg);gl.useProgram(pg);
+const U={};['uM','uVP','uN','uC','uEye','uL','uE','uSp','uSh','uA'].forEach(k=>U[k]=gl.getUniformLocation(pg,k));
+const aP=gl.getAttribLocation(pg,'aP'),aN=gl.getAttribLocation(pg,'aN');
+gl.enableVertexAttribArray(aP);gl.enableVertexAttribArray(aN);
+function geo(P,N,I){const g={n:I.length};g.p=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,g.p);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(P),gl.STATIC_DRAW);
+g.nb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,g.nb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(N),gl.STATIC_DRAW);
+g.i=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,g.i);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(I),gl.STATIC_DRAW);return g;}
+const SPH=(()=>{const P=[],I=[],w=28,h=18;for(let i=0;i<=h;i++){const t=i/h*Math.PI;for(let j=0;j<=w;j++){const f=j/w*2*Math.PI;P.push(Math.sin(t)*Math.cos(f),Math.cos(t),Math.sin(t)*Math.sin(f));}}
+for(let i=0;i<h;i++)for(let j=0;j<w;j++){const a=i*(w+1)+j,b=a+w+1;I.push(a,b,a+1,b,b+1,a+1);}return geo(P,P,I);})();
+const CYL=(()=>{const P=[],N=[],I=[],s=28;for(let j=0;j<=s;j++){const f=j/s*2*Math.PI,c=Math.cos(f),n=Math.sin(f);P.push(c,-.5,n,c,.5,n);N.push(c,0,n,c,0,n);}
+for(let j=0;j<s;j++){const a=j*2;I.push(a,a+1,a+2,a+1,a+3,a+2);}
+[-.5,.5].forEach(y=>{const o=P.length/3;P.push(0,y,0);N.push(0,Math.sign(y),0);for(let j=0;j<=s;j++){const f=j/s*2*Math.PI;P.push(Math.cos(f),y,Math.sin(f));N.push(0,Math.sign(y),0);}for(let j=0;j<s;j++)I.push(o,o+1+j,o+2+j);});return geo(P,N,I);})();
+const BOX=(()=>{const P=[],N=[],I=[];[[0,1],[0,-1],[1,1],[1,-1],[2,1],[2,-1]].forEach(([ax,sg])=>{const o=P.length/3,u=(ax+1)%3,v=(ax+2)%3;
+[[-1,-1],[1,-1],[1,1],[-1,1]].forEach(([a,b])=>{const p=[0,0,0],n=[0,0,0];p[ax]=.5*sg;p[u]=.5*a;p[v]=.5*b;n[ax]=sg;P.push(...p);N.push(...n);});I.push(o,o+1,o+2,o,o+2,o+3);});return geo(P,N,I);})();
+const DISC=(()=>{const P=[0,0,0],N=[0,1,0],I=[],s=80;for(let j=0;j<=s;j++){const f=j/s*2*Math.PI;P.push(Math.cos(f),0,Math.sin(f));N.push(0,1,0);}for(let j=0;j<s;j++)I.push(0,1+j,2+j);return geo(P,N,I);})();
+const css=k=>getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+const lin=h=>{h=h.replace('#','');return [0,2,4].map(i=>Math.pow(parseInt(h.substr(i,2),16)/255,2.2));};
+const mat=(sp,v)=>({c:[.5,.5,.5],e:0,sp,v});
+const mBody=mat(.2,'--figure'),mMetal=mat(.6,'--steel'),mPad=mat(.05,'--pad'),mSig=mat(.3,'--sig'),mAbs=mat(.3,'--sig'),mFloor=mat(0,'--line'),mPlate=mat(.4,'--pad'),mElbow=mat(.05,'--pad');
+const MATS=[mBody,mMetal,mPad,mSig,mAbs,mFloor,mPlate,mElbow];
+let dark=false;
+function theme(){MATS.forEach(m=>m.c=lin(css(m.v)||'#888888'));dark=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches&&document.documentElement.dataset.theme!=='light';}
+theme();if(window.matchMedia)matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{theme();rs();});
+const objs=[];
+function mesh(g,m,cast=true){const o={g,m,p:[0,0,0],q:[0,0,0,1],s:[1,1,1],cast};objs.push(o);return o;}
+const ad=(a,b,s=1)=>[a[0]+b[0]*s,a[1]+b[1]*s,a[2]+b[2]*s],mid=(a,b)=>[(a[0]+b[0])/2,(a[1]+b[1])/2,(a[2]+b[2])/2],sub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]];
+const len=a=>Math.hypot(a[0],a[1],a[2]),nrm=a=>{const l=len(a)||1;return [a[0]/l,a[1]/l,a[2]/l];},cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+function qFrom(a,b){b=nrm(b);const r=dot(a,b)+1;let q;if(r<1e-6){q=Math.abs(a[0])>Math.abs(a[2])?[-a[1],a[0],0,0]:[0,-a[2],a[1],0];}else{const c=cross(a,b);q=[c[0],c[1],c[2],r];}const l=Math.hypot(...q);return q.map(x=>x/l);}
+const qAx=(ax,an)=>[ax[0]*Math.sin(an/2),ax[1]*Math.sin(an/2),ax[2]*Math.sin(an/2),Math.cos(an/2)];
+const UP=[0,1,0];
+function cap(r,m,ends=true){const o={r,c:mesh(CYL,m)};if(ends){o.a=mesh(SPH,m);o.b=mesh(SPH,m);o.a.s=o.b.s=[r,r,r];}return o;}
+function setCap(o,A,B){const d=sub(B,A);o.c.p=mid(A,B);o.c.s=[o.r,len(d),o.r];o.c.q=qFrom(UP,d);if(o.a){o.a.p=A;o.b.p=B;}}
+function ell(x,y,z,m){const o=mesh(SPH,m);o.s=[x,y,z];return o;}
+function setEll(o,c,d){o.p=c;o.q=qFrom(UP,d);}
+function bx(w,h,d,m,p){const o=mesh(BOX,m);o.s=[w,h,d];o.p=p;return o;}
+function cyl(r,h,m,p,ax){const o=mesh(CYL,m);o.s=[r,h,r];o.p=p;o.q=qFrom(UP,ax);return o;}
+const floor=mesh(DISC,mFloor,false);floor.s=[1.0,1,1.0];floor.p=[0,0,-0.2];
+bx(0.34,0.04,0.36,mMetal,[-0.4,0.02,-0.6]);bx(0.34,0.06,0.36,mMetal,[-0.4,1.3,-0.6]);bx(0.34,1.28,0.02,mPad,[-0.4,0.66,-0.79]);
+[[-0.57,-0.42],[-0.23,-0.42],[-0.57,-0.78],[-0.23,-0.78]].forEach(q=>setCap(cap(0.018,mMetal,false),[q[0],0.04,q[1]],[q[0],1.27,q[1]]));
+[-0.46,-0.34].forEach(x=>setCap(cap(0.007,mMetal,false),[x,0.04,-0.6],[x,1.25,-0.6]));
+const plates=[];for(let i=0;i<12;i++)plates.push(bx(0.2,0.03,0.13,mPlate,[-0.4,0.07+i*0.034,-0.6]));
+const pinW=cyl(0.008,0.12,mSig,[0,0,0],[0,0,1]);
+cyl(0.04,0.02,mMetal,[-0.4,1.22,-0.6],[0,0,1]);
+const cable=cap(0.005,mPad,false);setCap(cap(0.005,mPad,false),[-0.4,1.22,-0.6],[-0.12,0.56,-0.05]);
+[[[0.05,0.03,0],[0.5,0.03,0]],[[0.05,0.03,0],[-0.38,0.03,-0.56]],[[-0.12,0.03,-0.2],[-0.12,0.56,-0.2]],[[-0.12,0.03,0.2],[-0.12,0.56,0.2]],[[0.05,0.03,-0.2],[0.05,0.03,0.2]],[[-0.12,0.03,-0.2],[-0.12,0.03,0.2]]].forEach(p=>setCap(cap(0.03,mMetal),p[0],p[1]));
+setCap(cap(0.035,mMetal),[0.05,0.03,0],[0.05,0.43,0]);setCap(cap(0.045,mMetal,false),[0.05,0.2,0],[0.05,0.36,0]);
+const pin=mesh(SPH,mSig);pin.s=[0.03,0.03,0.03];pin.p=[0.11,0.3,0];setCap(cap(0.012,mSig,false),[0.05,0.3,0],[0.11,0.3,0]);
+bx(0.36,0.07,0.36,mPad,[0.05,0.46,0]);
+setCap(cap(0.025,mMetal),[0.48,0.03,0],[0.48,0.2,0]);cyl(0.05,0.4,mPad,[0.48,0.2,0],[0,0,1]);
+setCap(cap(0.03,mMetal,false),[-0.12,0.56,-0.24],[-0.12,0.56,0.24]);
+const backPad=bx(0.07,0.38,0.32,mPad,[0,0,0]);
+const armsM=[-1,1].map(()=>({g:cap(0.017,mMetal),a:cap(0.02,mMetal),p:cap(0.02,mMetal),h:cyl(0.024,0.11,mPad,[0,0,0],[0,1,0]),ep:bx(0.07,0.2,0.09,mElbow,[0,0,0]),eb:cap(0.016,mMetal)}));
+const pelvis=ell(0.12,0.1,0.16,mBody),belly=ell(0.1,0.17,0.145,mBody),chest=ell(0.12,0.14,0.18,mBody),abs=ell(0.03,0.13,0.08,mAbs);
+const shoulders=cap(0.055,mBody),neck=cap(0.042,mBody),head=mesh(SPH,mBody);head.s=[0.1,0.1,0.1];
+const legs=[-1,1].map(()=>({t:cap(0.066,mBody),s:cap(0.05,mBody),f:ell(0.09,0.035,0.045,mPad)}));
+const arms=[-1,1].map(()=>({u:cap(0.045,mBody),f:cap(0.038,mBody),h:mesh(SPH,mBody)}));arms.forEach(a=>a.h.s=[0.044,0.044,0.044]);
+function compose(o){const[x,y,z,w]=o.q,[sx,sy,sz]=o.s;const m=new Float32Array(16);
+m[0]=(1-2*(y*y+z*z))*sx;m[1]=2*(x*y+w*z)*sx;m[2]=2*(x*z-w*y)*sx;m[4]=2*(x*y-w*z)*sy;m[5]=(1-2*(x*x+z*z))*sy;m[6]=2*(y*z+w*x)*sy;
+m[8]=2*(x*z+w*y)*sz;m[9]=2*(y*z-w*x)*sz;m[10]=(1-2*(x*x+y*y))*sz;m[12]=o.p[0];m[13]=o.p[1];m[14]=o.p[2];m[15]=1;
+const n=new Float32Array(9);for(let c=0;c<3;c++){const s=[sx,sy,sz][c],k=s*s;for(let r=0;r<3;r++)n[c*3+r]=m[c*4+r]/k;}return[m,n];}
+function mul(a,b){const o=new Float32Array(16);for(let c=0;c<4;c++)for(let r=0;r<4;r++){let s=0;for(let k=0;k<4;k++)s+=a[k*4+r]*b[c*4+k];o[c*4+r]=s;}return o;}
+function persp(f,a,n,fa){const t=1/Math.tan(f/2),m=new Float32Array(16);m[0]=t/a;m[5]=t;m[10]=(fa+n)/(n-fa);m[11]=-1;m[14]=2*fa*n/(n-fa);return m;}
+function look(e,t){const z=nrm(sub(e,t)),x=nrm(cross(UP,z)),y=cross(z,x);return new Float32Array([x[0],y[0],z[0],0,x[1],y[1],z[1],0,x[2],y[2],z[2],0,-dot(x,e),-dot(y,e),-dot(z,e),1]);}
+const L=nrm([1.6,3.2,2.2]),hS=0.003;
+const SH=new Float32Array([1,0,0,0,-L[0]/L[1],0,-L[2]/L[1],0,0,0,1,0,L[0]/L[1]*hS,hS,L[2]/L[1]*hS,1]);
+function draw(o,M,N,shadow,a){const g=o.g;gl.bindBuffer(gl.ARRAY_BUFFER,g.p);gl.vertexAttribPointer(aP,3,gl.FLOAT,false,0,0);
+gl.bindBuffer(gl.ARRAY_BUFFER,g.nb);gl.vertexAttribPointer(aN,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,g.i);
+gl.uniformMatrix4fv(U.uM,false,M);gl.uniformMatrix3fv(U.uN,false,N);gl.uniform3fv(U.uC,o.m.c);gl.uniform1f(U.uE,o.m.e);gl.uniform1f(U.uSp,o.m.sp);
+gl.uniform1f(U.uSh,shadow?1:0);gl.uniform1f(U.uA,a);gl.drawElements(gl.TRIANGLES,g.n,gl.UNSIGNED_SHORT,0);}
+const es=s=>s*s*(3-2*s);
+const phEls=[...document.querySelectorAll('.phase')],badTag=document.getElementById('badTag');
+const lbls=[0,1,2].map(i=>document.getElementById('l'+i));
+let lastPh=-1,W=0,H=0,VP,DPR=1,IW=130,IH=100,IM=10,PANEL=[1,1,1],elbowT=0,padPos=[0,0,0],hot=-1,hotT=0;st.ty=null;st.tp=null;
+function rs(){const d=Math.min(2,window.devicePixelRatio||1);DPR=d;W=cv.clientWidth;H=cv.clientHeight;cv.width=W*d;cv.height=H*d;const h=(css('--panel')||'#ffffff').replace('#','');PANEL=[0,2,4].map(i=>parseInt(h.substr(i,2),16)/255);}
+rs();window.addEventListener('resize',rs);
+function place(e,p){const v=[p[0],p[1],p[2],1],c=[0,0,0,0];for(let r=0;r<4;r++)for(let k=0;k<4;k++)c[r]+=VP[k*4+r]*v[k];const px=(c[0]/c[3]+1)/2*W;e.style.left=px+'px';const py=(1-c[1]/c[3])/2*H;e.style.transform=px>W-110?'translate(calc(-100% - 10px),-50%)':'';e.style.top=((1-c[1]/c[3])/2*H)+'px';}
+gl.enable(gl.DEPTH_TEST);
+function pose(t,bad,elv){const br=Math.sin(elv*1.4)*0.004;
+const a0=-0.14,Hp=[0,0.53,0],sp=[Hp],ths=[];let th=a0,p=Hp;
+for(let i=0;i<3;i++){th=bad?a0+t*0.82:a0+(i+1)*t*0.28;ths.push(th);p=ad(p,[0.17*Math.sin(th),0.17*Math.cos(th),0]);sp.push(p);}
+const top=sp[3],u=[Math.sin(th),Math.cos(th),0],fw=[Math.cos(th),-Math.sin(th),0];
+const thB=(ths[0]+ths[1])/2,fB=[Math.cos(thB),-Math.sin(thB),0];
+setEll(pelvis,ad(Hp,[-0.01,0.04,0]),[Math.sin(ths[0]*0.5),1,0]);
+const bc=ad(mid(sp[0],sp[2]),fB,0.012);setEll(belly,bc,sub(sp[2],sp[0]));belly.s=[0.1+br,0.17-t*0.015,0.145];
+setEll(chest,ad(ad(mid(sp[2],sp[3]),fw,0.012),u,-0.01),sub(sp[3],sp[2]));
+setEll(abs,ad(bc,fB,0.082),sub(sp[2],sp[0]));
+mAbs.e=bad?0.05:0.1+0.9*t;
+const shc=ad(top,u,-0.035);setCap(shoulders,ad(shc,[0,0,-0.17]),ad(shc,[0,0,0.17]));
+const nk=ad(top,u,0.1);setCap(neck,ad(top,u,0.02),nk);
+head.p=bad?ad(ad(nk,u,0.08),fw,0.06):ad(ad(nk,u,0.085),fw,0.025);
+const pt=ad(ad(top,fw,-0.1),u,-0.02),pb=ad(sp[1],[Math.cos(ths[0]),-Math.sin(ths[0]),0],-0.1);
+backPad.p=mid(pt,pb);backPad.q=qAx([0,0,1],-Math.atan2(pt[0]-pb[0],pt[1]-pb[1]));
+[-1,1].forEach((s,k)=>{
+const Lg=legs[k],K=[0.41,0.54,0.11*s],A=[0.44,0.11,0.11*s];
+setCap(Lg.t,[0,0.53,0.1*s],K);setCap(Lg.s,K,A);Lg.f.p=[0.49,0.05,0.11*s];Lg.f.q=qFrom([1,0,0],[1,0.1,0]);
+const Ar=arms[k],Sh=ad(shc,[0,0,0.17*s]);
+const Gp=bad?ad(ad(ad(top,u,0.02),fw,0.17),[0,0,0.21*s]):ad(ad(ad(top,u,0.11),fw,0.1),[0,0,0.21*s]);
+const E=ad(ad(ad(top,u,-0.07),fw,0.19),[0,0,0.25*s]);
+setCap(Ar.u,Sh,E);setCap(Ar.f,E,Gp);Ar.h.p=Gp;
+const m=armsM[k],ht=ad(Gp,u,0.07),hb=ad(Gp,u,-0.06),side=ad(pt,[0,0,0.2*s]);
+m.h.p=Gp;m.h.q=qFrom(UP,u);const fd=nrm(sub(Gp,E)),pc=ad(ad(mid(E,Gp),fw,0.055),[0,0,0.01*s]);m.ep.p=pc;m.ep.q=qFrom(UP,fd);setCap(m.eb,pc,hb);setCap(m.g,hb,ht);setCap(m.a,hb,side);setCap(m.p,side,[-0.12,0.56,0.22*s]);
+});
+const lift=t*0.2,N=6;
+plates.forEach((pl,i)=>{pl.p=[-0.4,0.07+i*0.034+(i>=N?lift:0),-0.6];});
+setCap(cable,[-0.4,1.2,-0.6],[-0.4,0.07+11*0.034+lift+0.015,-0.6]);
+pinW.p=[-0.4,0.07+N*0.034+lift,-0.55];return lift;}
+let demoEl=0;
+function render(VPm,eye){gl.uniformMatrix4fv(U.uVP,false,VPm);gl.uniform3fv(U.uEye,eye);gl.uniform3fv(U.uL,L);
+const C=objs.map(compose);draw(floor,C[0][0],C[0][1],false,1);
+gl.enable(gl.STENCIL_TEST);gl.stencilFunc(gl.EQUAL,0,0xff);gl.stencilOp(gl.KEEP,gl.KEEP,gl.INCR);
+gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.depthMask(false);
+objs.forEach((o,i)=>{if(o.cast)draw(o,mul(SH,C[i][0]),C[i][1],true,dark?0.4:0.2);});
+gl.disable(gl.STENCIL_TEST);gl.disable(gl.BLEND);gl.depthMask(true);
+objs.forEach((o,i)=>{if(i>0)draw(o,C[i][0],C[i][1],false,1);});}
+function phaseT(ph){if(ph<1)return[es(ph),0];if(ph<2)return[1,1];return[1-es((ph-2)/3),2];}
+function frame(now){const dt=Math.min(0.05,(now-last)/1000);last=now;if(st.play)el+=dt;
+const T=5;const[t,pi]=phaseT(el%T);window.simPh={ph:el%T,bad:st.bad};
+const key=st.bad?'b':pi;
+if(key!==lastPh){lastPh=key;phEls.forEach((e,i)=>{e.classList.toggle('on',!st.bad&&i===pi);e.classList.toggle('bad',st.bad);});badTag.hidden=!st.bad;}
+const pn=performance.now();mElbow.c=pn<elbowT?mSig.c:mPad.c;
+const lift=pose(t,st.bad,el);
+if(st.ty!==null){st.yaw+=(st.ty-st.yaw)*0.08;st.pitch+=(st.tp-st.pitch)*0.08;if(Math.abs(st.ty-st.yaw)<0.002)st.ty=null;}
+if(hot>=0&&pn>hotT){lbls[hot].classList.remove('hot');hot=-1;}
+const r=3.3,cp=Math.cos(st.pitch),tg=[0,0.6,-0.2];
+const eye=[tg[0]+r*cp*Math.cos(st.yaw),tg[1]+r*Math.sin(st.pitch),tg[2]+r*cp*Math.sin(st.yaw)];
+VP=mul(persp(30*Math.PI/180,W/H,0.1,50),look(eye,tg));
+gl.disable(gl.SCISSOR_TEST);gl.viewport(0,0,cv.width,cv.height);gl.clearColor(0,0,0,0);gl.clearStencil(0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT|gl.STENCIL_BUFFER_BIT);
+render(VP,eye);
+place(lbls[0],[0.12,0.3,0]);place(lbls[1],[0.48,0.2,0.2]);place(lbls[2],[-0.4,0.62+lift,-0.6]);
+requestAnimationFrame(frame);}
+requestAnimationFrame(frame);
+let drag=null;
+cv.addEventListener('pointerdown',e=>{st.ty=null;drag=[e.clientX,e.clientY];cv.setPointerCapture(e.pointerId);cv.style.cursor='grabbing';});
+cv.addEventListener('pointermove',e=>{if(!drag)return;st.yaw+=(e.clientX-drag[0])*0.008;st.pitch=Math.max(0.02,Math.min(1.2,st.pitch+(e.clientY-drag[1])*0.005));drag=[e.clientX,e.clientY];});
+const up=()=>{drag=null;cv.style.cursor='grab';};cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+const bP=document.getElementById('bPlay');const setPlay=()=>{bP.textContent=st.play?'일시정지':'재생';};setPlay();
+bP.onclick=()=>{st.play=!st.play;setPlay();};
+const bB=document.getElementById('bBad');
+bB.onclick=()=>{st.bad=!st.bad;bB.setAttribute('aria-pressed',st.bad);bB.textContent=st.bad?'올바른 동작 보기':'흔한 실수 비교';el=0;lastPh=-1;};
+document.getElementById('bSide').onclick=()=>{st.ty=Math.PI/2;st.tp=0.12;};
+document.getElementById('bObl').onclick=()=>{st.ty=-0.75;st.tp=0.3;};
+function setBad(v){st.bad=v;bB.setAttribute('aria-pressed',v);bB.textContent=v?'올바른 동작 보기':'흔한 실수 비교';lastPh=-1;}
+function go(y,p){let d=y-st.yaw;d=Math.atan2(Math.sin(d),Math.cos(d));st.ty=st.yaw+d;st.tp=p;}
+function light(i){if(hot>=0)lbls[hot].classList.remove('hot');hot=i;if(i>=0){lbls[i].classList.add('hot');hotT=performance.now()+4000;}}
+window.sim={focus(f){st.play=true;setPlay();
+if(f==='bad'){setBad(true);el=0;go(Math.PI/2,0.12);light(-1);return;}
+setBad(false);
+if(f==='arm'){go(-0.5,0.35);light(-1);elbowT=performance.now()+5000;el=0;}
+else if(f==='curl'){go(Math.PI/2,0.12);light(-1);el=0;}
+else if(f==='slow'){go(Math.PI/2,0.12);light(2);el=2;}
+else if(f==='seat'){go(0.9,0.2);light(0);}
+else if(f==='foot'){go(-0.4,0.35);light(1);}
+else if(f==='weight'){go(-1.3,0.25);light(2);}}};
+})();
+</script>
+
+
+<script>
+(function(){
+const groups=document.querySelectorAll('.sheet,.anat');
+if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.25});groups.forEach(g=>io.observe(g));}
+else groups.forEach(g=>g.classList.add('in'));
+const tw=[...document.querySelectorAll('.tw')],bars=[...document.querySelectorAll('.tbar b')],seg=[[0,1],[1,2],[2,5]];
+let last=-1;
+function loop(){const p=window.simPh;if(p){const ph=p.bad?-1:p.ph;
+bars.forEach((b,i)=>{const[a,z]=seg[i];const f=ph<0?0:Math.max(0,Math.min(1,(ph-a)/(z-a)));b.style.width=(f*100)+'%';});
+const cur=ph<0?-1:ph<1?0:ph<2?1:2;if(cur!==last){last=cur;tw.forEach((t,i)=>t.classList.toggle('now',i===cur));}}
+const asv=document.getElementById('anatSvg'),live=document.getElementById('live');
+if(p){const ph=p.ph,es=x=>x*x*(3-2*x);let c=ph<1?es(ph):ph<2?1:1-es((ph-2)/3);if(p.bad)c*=0.3;
+asv.style.setProperty('--rao',(0.6+0.4*c).toFixed(3));asv.style.setProperty('--obo',(0.35*c).toFixed(3));
+live.textContent=(p.bad?'틀린 자세 · 복직근 ':'복직근 수축 ')+Math.round(c*100)+'%';}
+requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
