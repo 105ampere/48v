@@ -218,6 +218,14 @@ main[hidden]{display:none}
 .anatfig .head{fill:var(--skin);stroke:var(--skinline);stroke-width:1}
 .wtile2{margin-top:12px}
 .ghostbtn{display:grid;place-items:center;text-decoration:none;background:transparent!important;color:inherit!important;border:1px solid currentColor!important;opacity:.9;font-size:16px;min-height:50px}
+.ivbox{background:#161C21;border-radius:14px;padding:12px;margin-bottom:10px;display:grid;gap:8px}
+.ivbar{height:6px;background:#2A333A;border-radius:3px;overflow:hidden}
+.ivbar b{display:block;height:100%;width:0;background:#F59A35}
+.ivbar b.easy{background:#6F84A3}
+#cardioView .wt{margin-bottom:10px}
+.shint.muted{color:#9AA6AF}
+.kcal{display:grid;gap:6px;margin:0 0 14px;font-size:13px;color:#9AA6AF}
+.kcal input{font:inherit;font-size:20px;padding:10px 12px;border-radius:12px;border:1px solid #3A444C;background:#161C21;color:#F2F4F5}
 .tag{position:absolute;left:12px;top:12px;background:var(--sig);color:#1A1205;font-size:13px;font-weight:500;padding:4px 10px;border-radius:6px}
 .fb{padding:40px 16px;text-align:center;color:var(--sub)}
 canvas{width:100%;height:360px;display:block;touch-action:none;cursor:grab}
@@ -268,7 +276,8 @@ ul.bad li::before{content:"✕";position:absolute;left:4px;top:12px;color:var(--
 </div>
 <div class="wtile wtile2">
 <div class="wthead"><svg class="mphoto icon" viewBox="0 0 88 88" aria-hidden="true"><rect width="88" height="88" rx="12" fill="#000"/><g fill="none" stroke="#9AA6AF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 72 H76"/><path d="M68 72 L62 26"/><path d="M56 22 L70 18 L72 30 L58 33 Z" fill="#2A333A"/><path d="M62 38 L40 40 L30 40"/><path d="M66 50 L40 58"/><path d="M22 60 H42"/><path d="M24 66 L24 72"/></g><path d="M18 54 Q30 64 46 60" fill="none" stroke="#F59A35" stroke-width="2.4" stroke-dasharray="3 4" stroke-linecap="round"/></svg><div><b>로어바디 아크 트레이너</b><small>Cybex R Series</small></div></div>
-<a class="startbtn ghostbtn" href="#arc-trainer">사용법 보기</a>
+<button class="startbtn" id="startArc">운동 시작</button>
+<a class="howto" href="#arc-trainer">사용법 보기</a>
 </div>
 <h2 class="hh">기록</h2>
 <ul class="hist" id="hist"></ul>
@@ -278,7 +287,7 @@ ul.bad li::before{content:"✕";position:absolute;left:4px;top:12px;color:var(--
 </main>
 <main id="guide" hidden>
 <a class="back" href="#">← 처음으로</a>
-<h1>앱도미널 크런치, 혼자서 제대로</h1>
+<h1>앱도미널 크런치</h1>
 <p class="model">Matrix Ultra Abdominal Crunch 기구 사용 가이드</p>
 
 <div class="stage">
@@ -298,7 +307,7 @@ ul.bad li::before{content:"✕";position:absolute;left:4px;top:12px;color:var(--
 <button id="bBad" aria-pressed="false">흔한 실수 비교</button>
 <button id="bSide">측면</button>
 <button id="bObl">사선</button>
-<a class="ytbtn" href="https://youtu.be/HFspzTiRX5w" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M8 5v14l11-7z"/></svg>실제 시연영상 (YouTube)</a>
+<a class="ytbtn" href="https://youtu.be/HFspzTiRX5w" target="_blank" rel="noopener" data-yt="HFspzTiRX5w" data-title="앱도미널 크런치 시연영상"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M8 5v14l11-7z"/></svg>실제 시연영상 (YouTube)</a>
 </div>
 </div>
 <p class="hint">드래그하면 시점이 돌아갑니다.</p>
@@ -376,7 +385,7 @@ ul.bad li::before{content:"✕";position:absolute;left:4px;top:12px;color:var(--
 </main>
 <main id="guideArc" hidden>
 <a class="back" href="#">← 처음으로</a>
-<h1>로어바디 아크 트레이너, 혼자서 제대로</h1>
+<h1>로어바디 아크 트레이너</h1>
 <p class="model">Cybex R Series Lower Body Arc Trainer 사용 가이드</p>
 <div class="stage">
 <div class="view">
@@ -396,6 +405,7 @@ ul.bad li::before{content:"✕";position:absolute;left:4px;top:12px;color:var(--
 <button id="aBad" aria-pressed="false">흔한 실수 비교</button>
 <button id="aSide">측면</button>
 <button id="aObl">사선</button>
+<a class="ytbtn" href="https://www.youtube.com/results?search_query=Cybex+R+Series+Lower+Body+Arc+Trainer" target="_blank" rel="noopener" data-yt="" data-title="로어바디 아크 트레이너 시연영상"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M8 5v14l11-7z"/></svg>시연영상 찾기 (YouTube)</a>
 </div>
 </div>
 <p class="hint">드래그하면 시점이 돌아갑니다. 인클라인을 바꾸면 페달 궤적이 달라져요.</p>
@@ -499,9 +509,10 @@ ul.bad li::before{content:"✕";position:absolute;left:4px;top:12px;color:var(--
 </div>
 <p class="hint">인터벌은 30초 강하게, 90초 편하게를 반복하는 방식이에요. 처음엔 꾸준한 속도로 20분부터 시작하세요.</p>
 <p class="note">저항은 입력한 체중에 비례해서 정해져요. 체중을 정확히 넣어야 강도가 맞아요.</p>
+<button class="startbtn wide2" id="guideStartArc">이 기구로 운동 시작</button>
 </main>
 <div class="sess" id="sess" hidden role="dialog" aria-label="운동 진행 중">
-<div class="stop"><span class="sname">앱도미널 크런치</span><span class="stime" id="sTime">00:00</span></div>
+<div class="stop"><span class="sname" id="sName">앱도미널 크런치</span><span class="stime" id="sTime">00:00</span></div>
 <div class="sset" id="sSet">세트 1</div>
 <div id="workView">
 <button class="repbig" id="repBtn" aria-label="반복 1회 추가"><span id="repN">0</span><small>회 · 탭해서 1회 추가</small></button>
@@ -512,13 +523,20 @@ ul.bad li::before{content:"✕";position:absolute;left:4px;top:12px;color:var(--
 <p class="shint" id="sHint"></p>
 <button class="primary" id="setDone">세트 완료</button>
 </div>
+<div id="cardioView" hidden>
+<div class="ivbox"><div class="ptxt" id="ivTxt">인터벌 가이드 꺼짐</div><div class="ivbar"><b id="ivFill"></b></div><button id="ivBtn" aria-pressed="false">인터벌 켜기 (30초 / 90초)</button></div>
+<div class="wt"><span>인클라인</span><button id="iMinus" aria-label="인클라인 낮추기">−</button><output id="iVal">10</output><button id="iPlus" aria-label="인클라인 높이기">+</button></div>
+<div class="wt"><span>저항</span><button id="rMinus" aria-label="저항 낮추기">−</button><output id="rVal">5</output><button id="rPlus" aria-label="저항 높이기">+</button></div>
+<p class="shint muted">콘솔에 맞춘 값을 바꿀 때마다 같이 바꿔 두면 기록에 남아요.</p>
+</div>
 <div id="restView" hidden>
 <div class="rring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="rbg" cx="60" cy="60" r="52"/><circle class="rfg2" id="restFg" cx="60" cy="60" r="52"/></svg><div class="rc"><b id="restN">60</b><small>휴식</small></div></div>
 <div class="row2"><button id="rest15">+15초</button><button class="primary" id="restSkip">다음 세트</button></div>
 </div>
 <div id="sumView" hidden>
 <h2 class="sumh">운동 완료</h2>
-<div class="sumg"><div><small>시간</small><b id="sumTime">0:00</b></div><div><small>세트</small><b id="sumSets">0</b></div><div><small>총 반복</small><b id="sumReps">0</b></div><div><small>총 볼륨</small><b id="sumVol">0 kg</b></div></div>
+<div class="sumg"><div><small id="sumL1">시간</small><b id="sumV1">0:00</b></div><div><small id="sumL2">세트</small><b id="sumV2">0</b></div><div><small id="sumL3">총 반복</small><b id="sumV3">0</b></div><div><small id="sumL4">총 볼륨</small><b id="sumV4">0 kg</b></div></div>
+<label class="kcal" id="kcalRow" hidden><span>콘솔에 표시된 칼로리</span><input id="kcalIn" type="number" inputmode="numeric" min="0" placeholder="선택 입력"></label>
 <button class="primary" id="sumSave">기록 저장</button>
 <button class="ghost" id="sumDiscard">저장하지 않기</button>
 </div>
@@ -719,17 +737,17 @@ requestAnimationFrame(loop);
 </script>
 <script>
 (function(){
-const URL_='https://youtu.be/HFspzTiRX5w',EMB='https://www.youtube-nocookie.com/embed/HFspzTiRX5w?autoplay=1&playsinline=1&rel=0';
-const btn=document.querySelector('a.ytbtn'),win=document.getElementById('yt'),box=document.getElementById('ytBox'),bar=document.getElementById('ytBar'),x=document.getElementById('ytX');
-if(!btn||!win)return;
+let URL_='',VID='',TTL='';
+const btns=[...document.querySelectorAll('a.ytbtn')],win=document.getElementById('yt'),box=document.getElementById('ytBox'),bar=document.getElementById('ytBar'),x=document.getElementById('ytX');
+if(!btns.length||!win)return;
 let blocked=false;
 document.addEventListener('securitypolicyviolation',e=>{if(/frame/.test(e.violatedDirective||e.effectiveDirective||'')&&/youtube/.test(e.blockedURI||'')){blocked=true;fallback();}});
 function fallback(){box.innerHTML='<div class="fbk"><p>이 화면에서는 영상을 바로 재생할 수 없어요.</p><a href="'+URL_+'" target="_blank" rel="noopener">유튜브에서 보기</a></div>';win.hidden=false;}
 function open(){if(blocked||location.protocol==='file:'){fallback();return;}
-if(!box.firstChild){const f=document.createElement('iframe');f.src=EMB;f.title='앱도미널 크런치 시연영상';f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;f.referrerPolicy='strict-origin-when-cross-origin';box.appendChild(f);}
+if(!box.firstChild||box.dataset.v!==VID){box.innerHTML='';box.dataset.v=VID;const f=document.createElement('iframe');f.src='https://www.youtube-nocookie.com/embed/'+VID+'?autoplay=1&playsinline=1&rel=0';f.title=TTL;f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;f.referrerPolicy='strict-origin-when-cross-origin';box.appendChild(f);}
 win.hidden=false;}
-function close(){win.hidden=true;box.innerHTML='';}
-btn.addEventListener('click',e=>{e.preventDefault();open();});
+function close(){win.hidden=true;box.innerHTML='';box.dataset.v='';}
+btns.forEach(b=>b.addEventListener('click',e=>{const v=b.dataset.yt;if(!v)return;e.preventDefault();VID=v;URL_=b.href;TTL=b.dataset.title||'시연영상';open();}));
 x.addEventListener('click',close);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!win.hidden)close();});
 let d=null;
@@ -909,7 +927,7 @@ zEls.forEach((e,i)=>e.addEventListener('click',()=>{st.inc=[3,10,17][i];incR.val
 const home=document.getElementById('home'),guide=document.getElementById('guide'),arc=document.getElementById('guideArc');
 function route(){const h=location.hash,g=h==='#ab-crunch',a=h==='#arc-trainer';home.hidden=g||a;guide.hidden=!g;arc.hidden=!a;
 document.title=g?'앱도미널 크런치 사용법 · Matrix Ultra':a?'로어바디 아크 트레이너 사용법 · Cybex':'운동';
-if(!g){const w=document.getElementById('yt'),b=document.getElementById('ytBox');if(w){w.hidden=true;b.innerHTML='';}}
+if(!g&&!a){const w=document.getElementById('yt'),b=document.getElementById('ytBox');if(w){w.hidden=true;b.innerHTML='';}}
 window.scrollTo(0,0);window.dispatchEvent(new Event('resize'));}
 window.addEventListener('hashchange',route);route();
 })();
@@ -919,55 +937,81 @@ window.addEventListener('hashchange',route);route();
 const $=id=>document.getElementById(id);
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
 let hist=LS.get('gym.history',[]);let S=LS.get('gym.active',null);
+const NAMES={'ab-crunch':'앱도미널 크런치','arc':'로어바디 아크 트레이너'};
 const days=['일','월','화','수','목','금','토'];
 const fmt=s=>{s=Math.max(0,Math.floor(s));const m=Math.floor(s/60),x=s%60;return String(m).padStart(2,'0')+':'+String(x).padStart(2,'0');};
 const now=()=>Date.now();
 const vib=p=>{try{navigator.vibrate&&navigator.vibrate(p);}catch(e){}};
 const save=()=>LS.set('gym.active',S);
+const exOf=h=>h.ex||'ab-crunch';
 function elapsed(){if(!S)return 0;const pz=S.pausedAt?now()-S.pausedAt:0;return (now()-S.start-S.paused-pz)/1000;}
-function lastWeight(){for(const h of hist){if(h.sets&&h.sets.length)return h.sets[h.sets.length-1].weight;}return 20;}
+function lastWeight(){for(const h of hist){if(exOf(h)==='ab-crunch'&&h.sets&&h.sets.length)return h.sets[h.sets.length-1].weight;}return 20;}
+function lastArc(){for(const h of hist){if(exOf(h)==='arc')return h;}return {inc:10,res:5};}
 function dstr(t){const d=new Date(t);return (d.getMonth()+1)+'월 '+d.getDate()+'일 ('+days[d.getDay()]+')';}
 function weekStart(){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7));return d.getTime();}
 const RC=2*Math.PI*52;
+function detail(h){if(exOf(h)==='arc')return fmt(h.dur)+' · 인클라인 '+h.inc+' · 저항 '+h.res+(h.kcal?' · '+h.kcal+'kcal':'')+(h.rounds?' · 인터벌 '+h.rounds+'회':'');
+const sets=h.sets||[],reps=sets.reduce((b,x)=>b+x.reps,0),mw=sets.length?Math.max(...sets.map(x=>x.weight)):0;return sets.length+'세트 · '+reps+'회 · 최고 '+mw+'kg · '+fmt(h.dur);}
 function renderHome(){
 const t=new Date();$('today').textContent=(t.getMonth()+1)+'월 '+t.getDate()+'일 '+days[t.getDay()]+'요일';
 const wk=hist.filter(h=>h.date>=weekStart()),goal=3;
 $('wkCount').textContent=wk.length+'/'+goal;
 const fg=$('ringFg');fg.style.strokeDasharray=RC;fg.style.strokeDashoffset=RC*(1-Math.min(1,wk.length/goal));fg.style.opacity=wk.length?1:0;
-$('wkReps').textContent=wk.reduce((a,h)=>a+h.sets.reduce((b,x)=>b+x.reps,0),0);
+$('wkReps').textContent=wk.reduce((a,h)=>a+(h.sets||[]).reduce((b,x)=>b+x.reps,0),0);
 $('wkTime').textContent=Math.round(wk.reduce((a,h)=>a+h.dur,0)/60)+'분';
 const ul=$('hist');ul.innerHTML='';
-hist.slice(0,30).forEach(h=>{const reps=h.sets.reduce((b,x)=>b+x.reps,0),mw=Math.max(...h.sets.map(x=>x.weight));
-const li=document.createElement('li');li.innerHTML='<div><b>'+dstr(h.date)+'</b><span>'+h.sets.length+'세트 · '+reps+'회 · 최고 '+mw+'kg · '+fmt(h.dur)+'</span></div><button aria-label="기록 삭제">✕</button>';
+hist.slice(0,30).forEach(h=>{const li=document.createElement('li');
+li.innerHTML='<div><b>'+dstr(h.date)+' · '+NAMES[exOf(h)]+'</b><span>'+detail(h)+'</span></div><button aria-label="기록 삭제">✕</button>';
 li.querySelector('button').onclick=()=>{if(confirm('이 기록을 삭제할까요?')){hist=hist.filter(x=>x.id!==h.id);LS.set('gym.history',hist);renderHome();window.cloud&&window.cloud.del(h.id);}};ul.appendChild(li);});
 $('empty').hidden=hist.length>0;$('exportBtn').hidden=!hist.length;}
-let pacer=null,lastCycle=0;
+let pacer=null,lastCycle=0,lastIv=-1;
 function stopPacer(){pacer=null;$('pacerBtn').setAttribute('aria-pressed','false');$('pacerBtn').textContent='템포 켜기';$('pTxt').textContent='템포 가이드 꺼짐';document.querySelectorAll('.pbar b').forEach(b=>b.style.width='0');}
-function show(){const v=S.mode;$('workView').hidden=v!=='work';$('restView').hidden=v!=='rest';$('sumView').hidden=v!=='sum';$('sfoot').hidden=v==='sum';
-$('sSet').textContent=v==='sum'?'':(v==='rest'?S.sets.length+'세트 끝 · 휴식':'세트 '+(S.sets.length+1));
-$('repN').textContent=S.reps;$('wVal').textContent=S.weight+' kg';$('pauseBtn').textContent=S.pausedAt?'계속':'일시정지';
-$('sLog').innerHTML=S.sets.map((x,i)=>'<li>'+(i+1)+'세트 <b>'+x.reps+'회</b> · '+x.weight+'kg</li>').join('');
-if(v==='sum'){const reps=S.sets.reduce((a,x)=>a+x.reps,0),vol=S.sets.reduce((a,x)=>a+x.reps*x.weight,0);
-$('sumTime').textContent=fmt(S.dur);$('sumSets').textContent=S.sets.length;$('sumReps').textContent=reps;$('sumVol').textContent=vol.toLocaleString()+' kg';}}
+function show(){const v=S.mode,arc=S.ex==='arc';
+$('sName').textContent=NAMES[S.ex];
+$('workView').hidden=v!=='work';$('restView').hidden=v!=='rest';$('cardioView').hidden=v!=='cardio';$('sumView').hidden=v!=='sum';$('sfoot').hidden=v==='sum';
+$('sSet').textContent=v==='sum'?'':arc?(S.ivOn?'인터벌 진행 중':'유산소'):(v==='rest'?S.sets.length+'세트 끝 · 휴식':'세트 '+(S.sets.length+1));
+$('pauseBtn').textContent=S.pausedAt?'계속':'일시정지';
+if(arc){$('iVal').textContent=S.inc;$('rVal').textContent=S.res;$('ivBtn').setAttribute('aria-pressed',S.ivOn?'true':'false');$('ivBtn').textContent=S.ivOn?'인터벌 끄기':'인터벌 켜기 (30초 / 90초)';if(!S.ivOn){$('ivTxt').textContent='인터벌 가이드 꺼짐';$('ivFill').style.width='0';}$('sLog').innerHTML='';}
+else{$('repN').textContent=S.reps;$('wVal').textContent=S.weight+' kg';
+$('sLog').innerHTML=S.sets.map((x,i)=>'<li>'+(i+1)+'세트 <b>'+x.reps+'회</b> · '+x.weight+'kg</li>').join('');}
+$('kcalRow').hidden=!(v==='sum'&&arc);
+if(v==='sum'){const L=[$('sumL1'),$('sumL2'),$('sumL3'),$('sumL4')];
+if(arc){[['시간',fmt(S.dur)],['인클라인',S.inc],['저항',S.res],['인터벌',(S.rounds||0)+'회']].forEach((p,i)=>{L[i].textContent=p[0];$('sumV'+(i+1)).textContent=p[1];});}
+else{const reps=S.sets.reduce((a,x)=>a+x.reps,0),vol=S.sets.reduce((a,x)=>a+x.reps*x.weight,0);
+[['시간',fmt(S.dur)],['세트',S.sets.length],['총 반복',reps],['총 볼륨',vol.toLocaleString()+' kg']].forEach((p,i)=>{L[i].textContent=p[0];$('sumV'+(i+1)).textContent=p[1];});}}}
 function open(){$('sess').hidden=false;document.body.style.overflow='hidden';show();requestAnimationFrame(tick);}
 function close(){$('sess').hidden=true;document.body.style.overflow='';stopPacer();renderHome();}
-function start(){if(S){open();return;}S={start:now(),paused:0,pausedAt:0,sets:[],reps:0,weight:lastWeight(),mode:'work',restEnd:0,restLeft:0};save();open();}
+function start(ex){if(S){if(S.ex!==ex)alert('진행 중인 '+NAMES[S.ex]+' 운동이 있어요. 먼저 마무리해 주세요.');open();return;}
+if(ex==='arc'){const la=lastArc();S={ex:'arc',start:now(),paused:0,pausedAt:0,mode:'cardio',inc:la.inc??10,res:la.res??5,ivOn:false,ivAt:0,rounds:0};}
+else S={ex:'ab-crunch',start:now(),paused:0,pausedAt:0,sets:[],reps:0,weight:lastWeight(),mode:'work',restEnd:0,restLeft:0};
+save();open();}
 function tick(){if(!S||$('sess').hidden)return;
 if(S.mode!=='sum')$('sTime').textContent=fmt(elapsed());
 if(S.mode==='rest'){const left=S.pausedAt?S.restLeft:(S.restEnd-now())/1000;$('restN').textContent=Math.max(0,Math.ceil(left));
 const f=$('restFg');f.style.strokeDasharray=RC;f.style.strokeDashoffset=RC*(1-Math.max(0,left)/S.restTotal);
 if(left<=0&&!S.pausedAt){vib([200,100,200]);S.mode='work';save();show();}}
+if(S.mode==='cardio'&&S.ivOn){const tt=elapsed()-S.ivAt,ph=tt%120,round=Math.floor(tt/120)+1,hard=ph<30;
+const seg=hard?0:1;if(lastIv!==seg+round*2){if(lastIv!==-1)vib(hard?[300,100,300]:[200]);lastIv=seg+round*2;if(hard&&round>S.rounds){S.rounds=round;save();}}
+$('ivTxt').textContent=(hard?'강하게':'편하게')+' · 남은 '+Math.ceil(hard?30-ph:120-ph)+'초 · '+round+'라운드';
+const fill=$('ivFill');fill.style.width=(hard?ph/30:(ph-30)/90)*100+'%';fill.classList.toggle('easy',!hard);}
 if(pacer&&!S.pausedAt&&S.mode==='work'){const tt=(now()-pacer)/1000,ph=tt%5,cyc=Math.floor(tt/5);
 if(cyc>lastCycle){lastCycle=cyc;S.reps++;save();$('repN').textContent=S.reps;vib(30);}
 $('pTxt').textContent=ph<1?'말기 · 숨 내쉬기':ph<2?'정지':'복귀 '+Math.ceil(5-ph)+'초';
 const seg=[[0,1],[1,2],[2,5]];document.querySelectorAll('.pbar b').forEach((b,i)=>{const[a,z]=seg[i];b.style.width=(Math.max(0,Math.min(1,(ph-a)/(z-a)))*100)+'%';});}
 requestAnimationFrame(tick);}
-$('startBtn').onclick=start;
-$('guideStart').onclick=()=>{location.hash='';start();};
+$('startBtn').onclick=()=>start('ab-crunch');
+$('startArc').onclick=()=>start('arc');
+$('guideStart').onclick=()=>{location.hash='';start('ab-crunch');};
+$('guideStartArc').onclick=()=>{location.hash='';start('arc');};
 $('repBtn').onclick=()=>{if(S.pausedAt)return;S.reps++;$('sHint').textContent='';save();show();vib(15);};
 $('repMinus').onclick=()=>{S.reps=Math.max(0,S.reps-1);save();show();};
 $('wMinus').onclick=()=>{S.weight=Math.max(0,S.weight-5);save();show();};
 $('wPlus').onclick=()=>{S.weight+=5;save();show();};
+$('iMinus').onclick=()=>{S.inc=Math.max(0,S.inc-1);save();show();};
+$('iPlus').onclick=()=>{S.inc=Math.min(20,S.inc+1);save();show();};
+$('rMinus').onclick=()=>{S.res=Math.max(1,S.res-1);save();show();};
+$('rPlus').onclick=()=>{S.res+=1;save();show();};
+$('ivBtn').onclick=()=>{S.ivOn=!S.ivOn;if(S.ivOn){S.ivAt=elapsed();lastIv=-1;}save();show();};
 $('pacerBtn').onclick=()=>{if(pacer){stopPacer();return;}pacer=now();lastCycle=0;$('pacerBtn').setAttribute('aria-pressed','true');$('pacerBtn').textContent='템포 끄기';};
 $('setDone').onclick=()=>{if(!S.reps){$('sHint').textContent='반복 횟수를 먼저 기록해 주세요.';return;}
 S.sets.push({reps:S.reps,weight:S.weight});S.reps=0;stopPacer();S.mode='rest';S.restTotal=60;S.restEnd=now()+60000;save();show();};
@@ -975,15 +1019,23 @@ $('rest15').onclick=()=>{if(S.pausedAt)S.restLeft+=15;else S.restEnd+=15000;S.re
 $('restSkip').onclick=()=>{S.mode='work';save();show();};
 $('pauseBtn').onclick=()=>{if(S.pausedAt){S.paused+=now()-S.pausedAt;if(S.mode==='rest')S.restEnd=now()+S.restLeft*1000;S.pausedAt=0;if(pacer)pacer=now();lastCycle=0;}
 else{S.pausedAt=now();if(S.mode==='rest')S.restLeft=(S.restEnd-now())/1000;}save();show();};
-$('endBtn').onclick=()=>{if(S.mode==='work'&&S.reps>0){S.sets.push({reps:S.reps,weight:S.weight});S.reps=0;}
-if(!S.sets.length){if(confirm('기록된 세트가 없어요. 운동을 끝낼까요?')){S=null;LS.set('gym.active',null);close();}return;}
-S.dur=elapsed();if(S.pausedAt){S.paused+=now()-S.pausedAt;S.pausedAt=0;}stopPacer();S.mode='sum';save();show();};
-$('sumSave').onclick=()=>{const rec={id:now(),date:S.start,dur:Math.round(S.dur),sets:S.sets,ex:'ab-crunch'};hist.unshift(rec);LS.set('gym.history',hist);window.cloud&&window.cloud.put(rec);S=null;LS.set('gym.active',null);close();};
+$('endBtn').onclick=()=>{
+if(S.ex==='arc'){if(elapsed()<10){if(confirm('운동 시간이 너무 짧아요. 기록 없이 끝낼까요?')){S=null;LS.set('gym.active',null);close();}return;}}
+else{if(S.mode==='work'&&S.reps>0){S.sets.push({reps:S.reps,weight:S.weight});S.reps=0;}
+if(!S.sets.length){if(confirm('기록된 세트가 없어요. 운동을 끝낼까요?')){S=null;LS.set('gym.active',null);close();}return;}}
+S.dur=elapsed();if(S.pausedAt){S.paused+=now()-S.pausedAt;S.pausedAt=0;}stopPacer();S.mode='sum';$('kcalIn').value='';save();show();};
+$('sumSave').onclick=()=>{let rec;
+if(S.ex==='arc'){const k=parseInt($('kcalIn').value,10);rec={id:now(),date:S.start,dur:Math.round(S.dur),ex:'arc',inc:S.inc,res:S.res,rounds:S.rounds||0,kcal:isNaN(k)?null:k,sets:[]};}
+else rec={id:now(),date:S.start,dur:Math.round(S.dur),sets:S.sets,ex:'ab-crunch'};
+hist.unshift(rec);LS.set('gym.history',hist);window.cloud&&window.cloud.put(rec);S=null;LS.set('gym.active',null);close();};
 $('sumDiscard').onclick=()=>{if(confirm('이번 운동을 저장하지 않을까요?')){S=null;LS.set('gym.active',null);close();}};
-$('exportBtn').onclick=()=>{const rows=[['날짜','시작시각','세트','반복','무게(kg)','운동시간(초)']];
-hist.slice().reverse().forEach(h=>{const d=new Date(h.date);h.sets.forEach((x,i)=>rows.push([d.toLocaleDateString('ko-KR'),d.toLocaleTimeString('ko-KR'),i+1,x.reps,x.weight,h.dur]));});
-const csv='\ufeff'+rows.map(r=>r.join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='운동기록.csv';document.body.appendChild(a);a.click();a.remove();};
+$('exportBtn').onclick=()=>{const rows=[['날짜','시작시각','운동','세트','반복','무게(kg)','운동시간(초)','인클라인','저항','칼로리']];
+hist.slice().reverse().forEach(h=>{const d=new Date(h.date),dd=d.toLocaleDateString('ko-KR'),tt=d.toLocaleTimeString('ko-KR'),n=NAMES[exOf(h)];
+if(exOf(h)==='arc')rows.push([dd,tt,n,'','','',h.dur,h.inc,h.res,h.kcal??'']);
+else (h.sets||[]).forEach((x,i)=>rows.push([dd,tt,n,i+1,x.reps,x.weight,h.dur,'','','']));});
+const csv='\ufeff'+rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='운동기록.csv';document.body.appendChild(a);a.click();a.remove();};
 window.gymHist={get:()=>hist.slice(),set:a=>{hist=a;LS.set('gym.history',hist);renderHome();}};
+if(S&&!S.ex)S.ex='ab-crunch';
 renderHome();if(S)open();
 })();
 </script>
