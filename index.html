@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>앱도미널 크런치 사용법 · Matrix Ultra</title>
+<title>기구 사용 가이드</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#E8EBED;--panel:#F6F7F8;--ink:#1A2228;--sub:#55616B;--line:#C7CDD2;--steel:#7D8891;--pad:#4E5963;--body:#2C5A73;--figure:#B3C4CF;--sig:#E8800F;--sig-ink:#9A4F00;
@@ -66,13 +66,13 @@ p{margin:0 0 12px}
 :root{--musc:#6F84A3;--coral:#DE6667;--skin:#FFFFFF;--skinline:#B9C0C6}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--musc:#6A7E9C;--coral:#E2706F;--skin:#252D33;--skinline:#5E6971}}
 :root[data-theme="dark"]{--musc:#6A7E9C;--coral:#E2706F;--skin:#252D33;--skinline:#5E6971}
-#anatSvg .sil{fill:var(--skin);stroke:var(--skinline);stroke-width:1;stroke-linejoin:round}
-#anatSvg .mass path,#anatSvg #mass path{fill:var(--musc);stroke:var(--musc);stroke-width:1.2;stroke-linejoin:round}
-#anatSvg .ra{fill:var(--coral);fill-opacity:var(--rao,.9);stroke:var(--coral);stroke-opacity:var(--rao,.9);stroke-width:1}
-#anatSvg .ob{fill:none}
-#anatSvg .lines path,#anatSvg #ln path{fill:none;stroke:var(--skin);stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
-#anatSvg .sk path{fill:none;stroke:var(--skinline);stroke-width:.8;stroke-linecap:round}
-#anatSvg .head{fill:var(--skin);stroke:var(--skinline);stroke-width:1}
+#anatSvg .sil,.mini .sil{fill:var(--skin);stroke:var(--skinline);stroke-width:1;stroke-linejoin:round}
+#anatSvg .mass,.mini .mass path,#anatSvg #mass path,.mini #mass-h path{fill:var(--musc);stroke:var(--musc);stroke-width:1.2;stroke-linejoin:round}
+#anatSvg .ra,.mini .ra{fill:var(--coral);fill-opacity:var(--rao,.9);stroke:var(--coral);stroke-opacity:var(--rao,.9);stroke-width:1}
+#anatSvg .ob,.mini .ob{fill:none}
+#anatSvg .lines,.mini .lines path,#anatSvg #ln path,.mini #ln-h path{fill:none;stroke:var(--skin);stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+#anatSvg .sk,.mini .sk path{fill:none;stroke:var(--skinline);stroke-width:.8;stroke-linecap:round}
+#anatSvg .head,.mini .head{fill:var(--skin);stroke:var(--skinline);stroke-width:1}
 .legend>div{margin-bottom:14px}
 .legend strong{font-weight:700;margin-right:6px}
 .legend em{font-style:normal;font-size:12px;color:var(--sub)}
@@ -95,6 +95,94 @@ p{margin:0 0 12px}
 .fbk p{margin:0}
 .fbk a{justify-self:center;background:#C4302B;color:#fff;text-decoration:none;padding:7px 14px;border-radius:8px;font-weight:500}
 .fvid iframe{pointer-events:none}
+main[hidden]{display:none}
+.eyebrow{margin:20px 0 6px;font-size:13px;font-weight:500;color:var(--sub)}
+.htitle{font-size:clamp(32px,9vw,46px);margin-bottom:28px}
+.mcard{display:grid;grid-template-columns:72px 1fr auto;align-items:center;gap:16px;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--panel);color:var(--ink);text-decoration:none;transition:border-color .2s,transform .2s}
+.mcard:hover{border-color:var(--ink)}
+.mcard:active{transform:scale(.99)}
+.mcard:focus-visible{outline:3px solid var(--sig);outline-offset:2px}
+.mcard .mini{width:72px;height:auto;display:block}
+.mcard .mini .ra{fill-opacity:1;stroke-opacity:1}
+.mt{display:block;font-size:20px;font-weight:700;line-height:1.3}
+.ms{display:block;font-size:14px;color:var(--sub)}
+.mm{display:block;font-size:12px;color:var(--sub);margin-top:6px}
+.go{font-size:22px;color:var(--sub)}
+.back{display:inline-block;margin:4px 0 14px;font-size:14px;color:var(--sub);text-decoration:none;padding:6px 0}
+.back:focus-visible{outline:3px solid var(--sig);outline-offset:2px}
+.eyebrow{margin:20px 0 4px;font-size:14px;font-weight:500;color:var(--sub)}
+.htitle{font-size:clamp(34px,10vw,48px);margin-bottom:18px}
+.week{display:grid;grid-template-columns:116px 1fr;gap:18px;align-items:center;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--panel);margin-bottom:12px}
+.ring,.rring{position:relative}
+.ring svg,.rring svg{width:100%;height:auto;display:block;transform:rotate(-90deg)}
+.rbg{fill:none;stroke:var(--line);stroke-width:12}
+.rfg,.rfg2{fill:none;stroke:var(--sig);stroke-width:12;stroke-linecap:round;transition:stroke-dashoffset .8s cubic-bezier(.3,.7,.2,1)}
+.rfg2{stroke:#6F84A3;transition:none}
+.rc{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.rc b{font-size:26px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.rc small{font-size:12px;color:var(--sub)}
+.wstats{display:grid;gap:8px}
+.wstats div b{display:block;font-size:24px;font-weight:700;line-height:1.2;font-variant-numeric:tabular-nums}
+.wstats small{font-size:12px;color:var(--sub)}
+.wstats p{margin:0;font-size:12px;color:var(--sub)}
+.wtile{padding:18px;border-radius:16px;background:var(--ink);color:var(--bg);display:grid;gap:14px}
+.wthead{display:grid;grid-template-columns:54px 1fr;gap:14px;align-items:center}
+.wthead .mini{width:54px;height:auto}
+.wthead b{display:block;font-size:20px;font-weight:700}
+.wthead small{font-size:14px;opacity:.75}
+.startbtn{min-height:56px;border:0;border-radius:999px;background:var(--sig);color:#1A1205;font-size:18px;font-weight:700;width:100%}
+.wide2{margin-top:20px}
+.howto{color:inherit;opacity:.8;font-size:14px;text-align:center}
+.hh{border-top:0;padding-top:0;margin-top:30px}
+.hist{list-style:none;padding:0;margin:0;border:1px solid var(--line);border-radius:12px;background:var(--panel);overflow:hidden}
+.hist:empty{display:none}
+.hist li{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}
+.hist li+li{border-top:1px solid var(--line)}
+.hist b{display:block;font-size:15px}
+.hist span{font-size:13px;color:var(--sub)}
+.hist button{border:0;min-height:36px;min-width:36px;padding:0;color:var(--sub)}
+.empty{color:var(--sub);font-size:14px}
+.exp{margin-top:12px;font-size:13px}
+.sess{position:fixed;inset:0;z-index:40;background:#0B0F12;color:#F2F4F5;display:flex;flex-direction:column;padding:calc(18px + env(safe-area-inset-top,0px)) 20px calc(16px + env(safe-area-inset-bottom,0px));overflow-y:auto}
+.sess[hidden]{display:none}
+.sess button{color:#F2F4F5;border-color:#3A444C}
+.stop{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.sname{font-size:15px;color:#9AA6AF}
+.stime{font-size:44px;font-weight:700;color:#F59A35;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.sset{font-size:15px;color:#9AA6AF;margin:2px 0 14px}
+.repbig{width:100%;border:0;background:#161C21;border-radius:22px;padding:20px 0 16px;display:flex;flex-direction:column;align-items:center;gap:4px;min-height:auto;transition:transform .08s}
+.repbig:active{transform:scale(.98)}
+#repN{font-size:104px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.repbig small{font-size:13px;color:#9AA6AF}
+.repctl{display:grid;grid-template-columns:64px 1fr auto;gap:10px;align-items:center;margin:12px 0}
+.pacer .ptxt{font-size:14px;margin-bottom:6px;color:#C9D1D6;min-height:20px}
+.pbar{display:flex;gap:3px;height:5px}
+.pbar i{display:block;background:#2A333A;border-radius:3px;overflow:hidden}
+.pbar i:nth-child(1),.pbar i:nth-child(2){flex:1}.pbar i:nth-child(3){flex:3}
+.pbar b{display:block;height:100%;width:0;background:#F59A35}
+#pacerBtn[aria-pressed="true"]{background:#F59A35;color:#1A1205;border-color:#F59A35}
+.wt{display:grid;grid-template-columns:1fr 52px 96px 52px;align-items:center;gap:8px;padding:10px 12px;background:#161C21;border-radius:14px}
+.wt span{color:#9AA6AF;font-size:14px}
+.wt output{text-align:center;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
+.wt button{font-size:20px;padding:0}
+.shint{min-height:20px;font-size:13px;color:#FF9C8F;margin:8px 0}
+.primary{width:100%;background:#F59A35!important;color:#1A1205!important;border:0;font-weight:700;font-size:17px;min-height:56px;border-radius:14px}
+.ghost{width:100%;border:0;margin-top:8px;color:#9AA6AF!important}
+.rring{width:min(62vw,240px);margin:10px auto 18px}
+.rring .rc b{font-size:56px;color:#F2F4F5}
+.rring .rc small{color:#9AA6AF}
+.row2{display:grid;grid-template-columns:96px 1fr;gap:10px}
+.sumh{border:0;margin:10px 0 16px;padding:0;font-size:28px}
+.sumg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.sumg div{background:#161C21;border-radius:14px;padding:14px}
+.sumg small{display:block;font-size:13px;color:#9AA6AF}
+.sumg b{font-size:28px;font-weight:700;font-variant-numeric:tabular-nums}
+.slog{list-style:none;padding:0;margin:14px 0 0;display:flex;flex-wrap:wrap;gap:6px;font-size:13px;color:#9AA6AF}
+.slog li{background:#161C21;padding:4px 10px;border-radius:999px}
+.slog b{color:#F2F4F5;font-weight:500}
+.sfoot{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-top:18px}
+.sfoot[hidden]{display:none}
+.danger{color:#FF9C8F!important;border-color:#5A2A27!important}
 .tag{position:absolute;left:12px;top:12px;background:var(--sig);color:#1A1205;font-size:13px;font-weight:500;padding:4px 10px;border-radius:6px}
 .fb{padding:40px 16px;text-align:center;color:var(--sub)}
 canvas{width:100%;height:360px;display:block;touch-action:none;cursor:grab}
@@ -130,7 +218,68 @@ ul.bad li::before{content:"✕";position:absolute;left:4px;top:12px;color:var(--
 </style>
 </head>
 <body>
-<main>
+<main id="home">
+<p class="eyebrow" id="today"></p>
+<h1 class="htitle">운동</h1>
+<section class="week" aria-label="이번 주 요약">
+<div class="ring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="rbg" cx="60" cy="60" r="52"/><circle class="rfg" id="ringFg" cx="60" cy="60" r="52"/></svg><div class="rc"><b id="wkCount">0/3</b><small>이번 주</small></div></div>
+<div class="wstats"><div><b id="wkReps">0</b><small>이번 주 반복</small></div><div><b id="wkTime">0분</b><small>이번 주 운동 시간</small></div><p>목표 주 3회</p></div>
+</section>
+<div class="wtile">
+<div class="wthead"><svg viewBox="0 0 200 446" class="mini" aria-hidden="true">
+<defs>
+<g id="mass-h">
+<path d="M100 70 Q108 66 116 68 Q138 71 151 77 Q162 83 163 100 Q168 130 172 165 Q176 185 178 202 L165 205 Q160 186 155 168 Q150 140 140 114 Q136 140 132 172 Q138 186 141 198 Q122 212 100 223 Z"/>
+<path d="M142 201 Q150 224 146 252 Q145 280 138 298 Q127 303 116 298 Q110 291 109 280 Q105 262 104 240 Q103 231 103 227 Q123 216 142 201 Z"/>
+<path d="M110 324 Q117 329 118 350 Q118 368 113 381 Q107 360 110 324 Z"/>
+<path d="M121 317 Q128 323 129 346 Q129 372 125 393 L121 393 Q119 360 121 317 Z"/>
+<path d="M132 315 Q141 329 140 352 Q138 370 133 381 Q131 350 132 315 Z"/>
+</g>
+<g id="tgt-h">
+<path class="ob" d="M122 125 Q131 118 140 115 Q137 140 133 170 Q137 184 140 196 Q122 210 104 219 Q113 210 119 190 Q124 160 122 125 Z"/>
+<path class="ra" d="M100 121 Q114 120 121 124 Q124 160 119 190 Q112 210 100 220 Z"/>
+</g>
+<g id="ln-h">
+<path d="M104 74 Q123 70 145 77"/>
+<path d="M144 78 Q139 93 147 106"/>
+<path d="M101 118 Q118 125 132 119 Q142 113 147 101"/>
+<path d="M148 80 Q160 87 162 104"/>
+<path d="M147 107 Q152 118 158 125"/>
+<path d="M152 121 Q158 142 160 166"/>
+<path d="M159 113 Q166 134 168 160"/>
+<path d="M157 168 Q165 165 172 170"/>
+<path d="M160 175 Q168 187 176 202"/>
+<path d="M166 173 Q173 185 179 198"/>
+<path d="M157 183 Q163 195 168 205"/>
+<path d="M140 116 L131 124"/><path d="M139 127 L130 134"/><path d="M137 138 L129 144"/><path d="M136 149 L129 154"/>
+<path d="M141 112 Q137 140 133 170 Q137 184 140 196"/>
+<path d="M100 121 Q114 120 121 124 Q124 160 119 190 Q112 210 100 220"/>
+<path d="M100 140 Q112 134 122.5 138"/><path d="M100 157 Q112 152 123 155"/><path d="M100 175 Q111 171 122 173"/>
+<path d="M141 206 Q125 246 112 291"/>
+<path d="M128 214 Q135 252 128 296"/>
+<path d="M144 230 Q147 264 136 296"/>
+<path d="M106 233 Q113 256 110 282"/>
+<path d="M114 263 Q123 281 120 298"/>
+</g>
+</defs>
+<path class="sil" d="M100 50 L107 50 Q109 62 116 66 Q138 70 152 76 Q165 82 165 100 Q170 130 174 165 Q178 185 180 203 Q192 214 197 232 Q198 239 193 238 L186 230 Q190 248 192 260 Q191 267 185 265 Q179 256 175 246 Q173 259 169 265 Q164 266 165 257 Q166 240 164 222 Q162 212 162 206 Q158 186 155 168 Q150 140 140 112 Q136 140 132 172 Q140 188 143 205 Q151 226 148 252 Q146 280 139 300 Q141 311 138 321 Q142 350 137 381 L132 398 Q135 412 144 427 Q146 438 136 440 L117 440 Q112 421 116 402 L113 392 Q108 360 111 324 Q108 313 110 300 Q105 270 104 240 Q102 229 100 227 Q98 229 96 240 Q95 270 90 300 Q92 313 89 324 Q92 360 87 392 L84 402 Q88 421 83 440 L64 440 Q54 438 56 427 Q65 412 68 398 L63 381 Q58 350 62 321 Q59 311 61 300 Q54 280 52 252 Q49 226 57 205 Q60 188 68 172 Q64 140 60 112 Q50 140 45 168 Q42 186 38 206 Q38 212 36 222 Q34 240 35 257 Q36 266 31 265 Q27 259 25 246 Q21 256 15 265 Q9 267 8 260 Q10 248 14 230 L7 238 Q2 239 3 232 Q8 214 20 203 Q22 185 26 165 Q30 130 35 100 Q35 82 48 76 Q62 70 84 66 Q91 62 93 50 L100 50 Z"/>
+<g class="mass"><use href="#mass-h"/><use href="#mass-h" transform="translate(200 0) scale(-1 1)"/></g>
+<use href="#tgt-h"/><use href="#tgt-h" transform="translate(200 0) scale(-1 1)"/>
+<g class="lines"><path d="M100 78 L100 221"/><use href="#ln-h"/><use href="#ln-h" transform="translate(200 0) scale(-1 1)"/></g>
+<g class="sk"><path d="M95 54 Q93 62 90 68 M105 54 Q107 62 110 68 M98 60 L99 66 M102 60 L101 66"/><path d="M176 232 L182 258 M171 236 L172 262"/><path d="M24 232 L18 258 M29 236 L28 262"/></g>
+<ellipse class="head" cx="100" cy="28" rx="17" ry="24"/>
+</svg><div><b>앱도미널 크런치</b><small>Matrix Ultra · 복근</small></div></div>
+<button class="startbtn" id="startBtn">운동 시작</button>
+<a class="howto" href="#ab-crunch">사용법 보기</a>
+</div>
+<h2 class="hh">기록</h2>
+<ul class="hist" id="hist"></ul>
+<p class="empty" id="empty">아직 기록이 없어요. 첫 운동을 시작해 보세요.</p>
+<button class="exp" id="exportBtn" hidden>기록 내보내기 (CSV)</button>
+<p class="note">기록은 이 기기의 브라우저에만 저장돼요.</p>
+</main>
+<main id="guide" hidden>
+<a class="back" href="#">← 처음으로</a>
 <h1>앱도미널 크런치, 혼자서 제대로</h1>
 <p class="model">Matrix Ultra Abdominal Crunch 기구 사용 가이드</p>
 
@@ -225,7 +374,33 @@ ul.bad li::before{content:"✕";position:absolute;left:4px;top:12px;color:var(--
 </div>
 <p class="hint">1회 약 5초, 1세트 약 1분, 전체 약 5분이면 끝나요.</p>
 <p class="note">허리가 아프면 무게와 범위를 줄이세요.</p>
+<button class="startbtn wide2" id="guideStart">이 기구로 운동 시작</button>
 </main>
+<div class="sess" id="sess" hidden role="dialog" aria-label="운동 진행 중">
+<div class="stop"><span class="sname">앱도미널 크런치</span><span class="stime" id="sTime">00:00</span></div>
+<div class="sset" id="sSet">세트 1</div>
+<div id="workView">
+<button class="repbig" id="repBtn" aria-label="반복 1회 추가"><span id="repN">0</span><small>회 · 탭해서 1회 추가</small></button>
+<div class="repctl"><button id="repMinus" aria-label="1회 빼기">−1</button>
+<div class="pacer"><div class="ptxt" id="pTxt">템포 가이드 꺼짐</div><div class="pbar"><i><b></b></i><i><b></b></i><i><b></b></i></div></div>
+<button id="pacerBtn" aria-pressed="false">템포 켜기</button></div>
+<div class="wt"><span>무게</span><button id="wMinus" aria-label="무게 줄이기">−</button><output id="wVal">20 kg</output><button id="wPlus" aria-label="무게 늘리기">+</button></div>
+<p class="shint" id="sHint"></p>
+<button class="primary" id="setDone">세트 완료</button>
+</div>
+<div id="restView" hidden>
+<div class="rring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="rbg" cx="60" cy="60" r="52"/><circle class="rfg2" id="restFg" cx="60" cy="60" r="52"/></svg><div class="rc"><b id="restN">60</b><small>휴식</small></div></div>
+<div class="row2"><button id="rest15">+15초</button><button class="primary" id="restSkip">다음 세트</button></div>
+</div>
+<div id="sumView" hidden>
+<h2 class="sumh">운동 완료</h2>
+<div class="sumg"><div><small>시간</small><b id="sumTime">0:00</b></div><div><small>세트</small><b id="sumSets">0</b></div><div><small>총 반복</small><b id="sumReps">0</b></div><div><small>총 볼륨</small><b id="sumVol">0 kg</b></div></div>
+<button class="primary" id="sumSave">기록 저장</button>
+<button class="ghost" id="sumDiscard">저장하지 않기</button>
+</div>
+<ol class="slog" id="sLog"></ol>
+<div class="sfoot" id="sfoot"><button id="pauseBtn">일시정지</button><button class="danger" id="endBtn">운동 종료</button></div>
+</div>
 <div class="float" id="yt" role="dialog" aria-label="시연영상 미니 창" hidden>
 <div class="fbar" id="ytBar"><span><i></i>시연영상</span><button id="ytX" aria-label="시연영상 닫기">✕</button></div>
 <div class="fvid" id="ytBox"></div>
@@ -358,7 +533,7 @@ objs.forEach((o,i)=>{if(o.cast)draw(o,mul(SH,C[i][0]),C[i][1],true,dark?0.4:0.2)
 gl.disable(gl.STENCIL_TEST);gl.disable(gl.BLEND);gl.depthMask(true);
 objs.forEach((o,i)=>{if(i>0)draw(o,C[i][0],C[i][1],false,1);});}
 function phaseT(ph){if(ph<1)return[es(ph),0];if(ph<2)return[1,1];return[1-es((ph-2)/3),2];}
-function frame(now){const dt=Math.min(0.05,(now-last)/1000);last=now;if(st.play)el+=dt;
+function frame(now){const dt=Math.min(0.05,(now-last)/1000);last=now;if(!cv.clientWidth){requestAnimationFrame(frame);return;}if(st.play)el+=dt;
 const T=5;const[t,pi]=phaseT(el%T);window.simPh={ph:el%T,bad:st.bad};
 const key=st.bad?'b':pi;
 if(key!==lastPh){lastPh=key;phEls.forEach((e,i)=>{e.classList.toggle('on',!st.bad&&i===pi);e.classList.toggle('bad',st.bad);});badTag.hidden=!st.bad;}
@@ -440,6 +615,88 @@ bar.addEventListener('pointermove',e=>{if(!d)return;const w=win.offsetWidth,h=wi
 win.style.left=Math.max(4,Math.min(innerWidth-w-4,e.clientX-d.dx))+'px';win.style.top=Math.max(4,Math.min(innerHeight-h-4,e.clientY-d.dy))+'px';});
 const end=()=>{d=null;win.classList.remove('drag');};bar.addEventListener('pointerup',end);bar.addEventListener('pointercancel',end);
 addEventListener('resize',()=>{if(win.style.left){const w=win.offsetWidth,h=win.offsetHeight;win.style.left=Math.max(4,Math.min(innerWidth-w-4,parseFloat(win.style.left)))+'px';win.style.top=Math.max(4,Math.min(innerHeight-h-4,parseFloat(win.style.top)))+'px';}});
+})();
+</script>
+<script>
+(function(){
+const home=document.getElementById('home'),guide=document.getElementById('guide');
+function route(){const g=location.hash==='#ab-crunch';home.hidden=g;guide.hidden=!g;
+document.title=g?'앱도미널 크런치 사용법 · Matrix Ultra':'기구 사용 가이드';
+if(!g){const w=document.getElementById('yt'),b=document.getElementById('ytBox');if(w){w.hidden=true;b.innerHTML='';}}
+window.scrollTo(0,0);window.dispatchEvent(new Event('resize'));}
+window.addEventListener('hashchange',route);route();
+})();
+</script>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+let hist=LS.get('gym.history',[]);let S=LS.get('gym.active',null);
+const days=['일','월','화','수','목','금','토'];
+const fmt=s=>{s=Math.max(0,Math.floor(s));const m=Math.floor(s/60),x=s%60;return String(m).padStart(2,'0')+':'+String(x).padStart(2,'0');};
+const now=()=>Date.now();
+const vib=p=>{try{navigator.vibrate&&navigator.vibrate(p);}catch(e){}};
+const save=()=>LS.set('gym.active',S);
+function elapsed(){if(!S)return 0;const pz=S.pausedAt?now()-S.pausedAt:0;return (now()-S.start-S.paused-pz)/1000;}
+function lastWeight(){for(const h of hist){if(h.sets&&h.sets.length)return h.sets[h.sets.length-1].weight;}return 20;}
+function dstr(t){const d=new Date(t);return (d.getMonth()+1)+'월 '+d.getDate()+'일 ('+days[d.getDay()]+')';}
+function weekStart(){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7));return d.getTime();}
+const RC=2*Math.PI*52;
+function renderHome(){
+const t=new Date();$('today').textContent=(t.getMonth()+1)+'월 '+t.getDate()+'일 '+days[t.getDay()]+'요일';
+const wk=hist.filter(h=>h.date>=weekStart()),goal=3;
+$('wkCount').textContent=wk.length+'/'+goal;
+const fg=$('ringFg');fg.style.strokeDasharray=RC;fg.style.strokeDashoffset=RC*(1-Math.min(1,wk.length/goal));fg.style.opacity=wk.length?1:0;
+$('wkReps').textContent=wk.reduce((a,h)=>a+h.sets.reduce((b,x)=>b+x.reps,0),0);
+$('wkTime').textContent=Math.round(wk.reduce((a,h)=>a+h.dur,0)/60)+'분';
+const ul=$('hist');ul.innerHTML='';
+hist.slice(0,30).forEach(h=>{const reps=h.sets.reduce((b,x)=>b+x.reps,0),mw=Math.max(...h.sets.map(x=>x.weight));
+const li=document.createElement('li');li.innerHTML='<div><b>'+dstr(h.date)+'</b><span>'+h.sets.length+'세트 · '+reps+'회 · 최고 '+mw+'kg · '+fmt(h.dur)+'</span></div><button aria-label="기록 삭제">✕</button>';
+li.querySelector('button').onclick=()=>{if(confirm('이 기록을 삭제할까요?')){hist=hist.filter(x=>x.id!==h.id);LS.set('gym.history',hist);renderHome();}};ul.appendChild(li);});
+$('empty').hidden=hist.length>0;$('exportBtn').hidden=!hist.length;}
+let pacer=null,lastCycle=0;
+function stopPacer(){pacer=null;$('pacerBtn').setAttribute('aria-pressed','false');$('pacerBtn').textContent='템포 켜기';$('pTxt').textContent='템포 가이드 꺼짐';document.querySelectorAll('.pbar b').forEach(b=>b.style.width='0');}
+function show(){const v=S.mode;$('workView').hidden=v!=='work';$('restView').hidden=v!=='rest';$('sumView').hidden=v!=='sum';$('sfoot').hidden=v==='sum';
+$('sSet').textContent=v==='sum'?'':(v==='rest'?S.sets.length+'세트 끝 · 휴식':'세트 '+(S.sets.length+1));
+$('repN').textContent=S.reps;$('wVal').textContent=S.weight+' kg';$('pauseBtn').textContent=S.pausedAt?'계속':'일시정지';
+$('sLog').innerHTML=S.sets.map((x,i)=>'<li>'+(i+1)+'세트 <b>'+x.reps+'회</b> · '+x.weight+'kg</li>').join('');
+if(v==='sum'){const reps=S.sets.reduce((a,x)=>a+x.reps,0),vol=S.sets.reduce((a,x)=>a+x.reps*x.weight,0);
+$('sumTime').textContent=fmt(S.dur);$('sumSets').textContent=S.sets.length;$('sumReps').textContent=reps;$('sumVol').textContent=vol.toLocaleString()+' kg';}}
+function open(){$('sess').hidden=false;document.body.style.overflow='hidden';show();requestAnimationFrame(tick);}
+function close(){$('sess').hidden=true;document.body.style.overflow='';stopPacer();renderHome();}
+function start(){if(S){open();return;}S={start:now(),paused:0,pausedAt:0,sets:[],reps:0,weight:lastWeight(),mode:'work',restEnd:0,restLeft:0};save();open();}
+function tick(){if(!S||$('sess').hidden)return;
+if(S.mode!=='sum')$('sTime').textContent=fmt(elapsed());
+if(S.mode==='rest'){const left=S.pausedAt?S.restLeft:(S.restEnd-now())/1000;$('restN').textContent=Math.max(0,Math.ceil(left));
+const f=$('restFg');f.style.strokeDasharray=RC;f.style.strokeDashoffset=RC*(1-Math.max(0,left)/S.restTotal);
+if(left<=0&&!S.pausedAt){vib([200,100,200]);S.mode='work';save();show();}}
+if(pacer&&!S.pausedAt&&S.mode==='work'){const tt=(now()-pacer)/1000,ph=tt%5,cyc=Math.floor(tt/5);
+if(cyc>lastCycle){lastCycle=cyc;S.reps++;save();$('repN').textContent=S.reps;vib(30);}
+$('pTxt').textContent=ph<1?'말기 · 숨 내쉬기':ph<2?'정지':'복귀 '+Math.ceil(5-ph)+'초';
+const seg=[[0,1],[1,2],[2,5]];document.querySelectorAll('.pbar b').forEach((b,i)=>{const[a,z]=seg[i];b.style.width=(Math.max(0,Math.min(1,(ph-a)/(z-a)))*100)+'%';});}
+requestAnimationFrame(tick);}
+$('startBtn').onclick=start;
+$('guideStart').onclick=()=>{location.hash='';start();};
+$('repBtn').onclick=()=>{if(S.pausedAt)return;S.reps++;$('sHint').textContent='';save();show();vib(15);};
+$('repMinus').onclick=()=>{S.reps=Math.max(0,S.reps-1);save();show();};
+$('wMinus').onclick=()=>{S.weight=Math.max(0,S.weight-5);save();show();};
+$('wPlus').onclick=()=>{S.weight+=5;save();show();};
+$('pacerBtn').onclick=()=>{if(pacer){stopPacer();return;}pacer=now();lastCycle=0;$('pacerBtn').setAttribute('aria-pressed','true');$('pacerBtn').textContent='템포 끄기';};
+$('setDone').onclick=()=>{if(!S.reps){$('sHint').textContent='반복 횟수를 먼저 기록해 주세요.';return;}
+S.sets.push({reps:S.reps,weight:S.weight});S.reps=0;stopPacer();S.mode='rest';S.restTotal=60;S.restEnd=now()+60000;save();show();};
+$('rest15').onclick=()=>{if(S.pausedAt)S.restLeft+=15;else S.restEnd+=15000;S.restTotal+=15;save();};
+$('restSkip').onclick=()=>{S.mode='work';save();show();};
+$('pauseBtn').onclick=()=>{if(S.pausedAt){S.paused+=now()-S.pausedAt;if(S.mode==='rest')S.restEnd=now()+S.restLeft*1000;S.pausedAt=0;if(pacer)pacer=now();lastCycle=0;}
+else{S.pausedAt=now();if(S.mode==='rest')S.restLeft=(S.restEnd-now())/1000;}save();show();};
+$('endBtn').onclick=()=>{if(S.mode==='work'&&S.reps>0){S.sets.push({reps:S.reps,weight:S.weight});S.reps=0;}
+if(!S.sets.length){if(confirm('기록된 세트가 없어요. 운동을 끝낼까요?')){S=null;LS.set('gym.active',null);close();}return;}
+S.dur=elapsed();if(S.pausedAt){S.paused+=now()-S.pausedAt;S.pausedAt=0;}stopPacer();S.mode='sum';save();show();};
+$('sumSave').onclick=()=>{hist.unshift({id:now(),date:S.start,dur:Math.round(S.dur),sets:S.sets,ex:'ab-crunch'});LS.set('gym.history',hist);S=null;LS.set('gym.active',null);close();};
+$('sumDiscard').onclick=()=>{if(confirm('이번 운동을 저장하지 않을까요?')){S=null;LS.set('gym.active',null);close();}};
+$('exportBtn').onclick=()=>{const rows=[['날짜','시작시각','세트','반복','무게(kg)','운동시간(초)']];
+hist.slice().reverse().forEach(h=>{const d=new Date(h.date);h.sets.forEach((x,i)=>rows.push([d.toLocaleDateString('ko-KR'),d.toLocaleTimeString('ko-KR'),i+1,x.reps,x.weight,h.dur]));});
+const csv='\ufeff'+rows.map(r=>r.join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='운동기록.csv';document.body.appendChild(a);a.click();a.remove();};
+renderHome();if(S)open();
 })();
 </script>
 </body>
