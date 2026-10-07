@@ -3,6 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>
+/* Firebase 설정: Firebase 콘솔 > 프로젝트 설정 > 내 앱(웹)에서 복사한 값을 넣으세요. 비워 두면 기기 저장만 사용합니다. */
+window.FIREBASE_CONFIG={
+  apiKey:"AIzaSyAG63PsvEk-nMOV1Ql1ULQYTQyM2eCEAOE",
+  authDomain:"ampere-41ac2.firebaseapp.com",
+  databaseURL:"https://ampere-41ac2-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId:"ampere-41ac2",
+  storageBucket:"ampere-41ac2.firebasestorage.app",
+  messagingSenderId:"237255963258",
+  appId:"1:237255963258:web:dc67ca62e064279875c1c3",
+  measurementId:"G-4N1WMCZ7MC"
+};
+</script>
 <title>기구 사용 가이드</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -126,7 +139,8 @@ main[hidden]{display:none}
 .wstats small{font-size:12px;color:var(--sub)}
 .wstats p{margin:0;font-size:12px;color:var(--sub)}
 .wtile{padding:18px;border-radius:16px;background:var(--ink);color:var(--bg);display:grid;gap:14px}
-.wthead{display:grid;grid-template-columns:54px 1fr;gap:14px;align-items:center}
+.wthead{display:grid;grid-template-columns:88px 1fr;gap:16px;align-items:center}
+.mphoto{width:88px;height:88px;border-radius:12px;background:#000;object-fit:cover;display:block}
 .wthead .mini{width:54px;height:auto}
 .wthead b{display:block;font-size:20px;font-weight:700}
 .wthead small{font-size:14px;opacity:.75}
@@ -183,6 +197,10 @@ main[hidden]{display:none}
 .sfoot{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-top:18px}
 .sfoot[hidden]{display:none}
 .danger{color:#FF9C8F!important;border-color:#5A2A27!important}
+.sync{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-6px 0 16px;font-size:13px;color:var(--sub)}
+.sync button{min-height:34px;padding:4px 12px;font-size:13px}
+.sync .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;background:var(--steel);vertical-align:1px}
+.sync .dot.on{background:#3FA672}
 .tag{position:absolute;left:12px;top:12px;background:var(--sig);color:#1A1205;font-size:13px;font-weight:500;padding:4px 10px;border-radius:6px}
 .fb{padding:40px 16px;text-align:center;color:var(--sub)}
 canvas{width:100%;height:360px;display:block;touch-action:none;cursor:grab}
@@ -221,54 +239,13 @@ ul.bad li::before{content:"✕";position:absolute;left:4px;top:12px;color:var(--
 <main id="home">
 <p class="eyebrow" id="today"></p>
 <h1 class="htitle">운동</h1>
+<div class="sync" id="sync"><span id="syncTxt">기기에만 저장 중</span><button id="syncBtn" hidden>구글로 로그인</button></div>
 <section class="week" aria-label="이번 주 요약">
 <div class="ring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="rbg" cx="60" cy="60" r="52"/><circle class="rfg" id="ringFg" cx="60" cy="60" r="52"/></svg><div class="rc"><b id="wkCount">0/3</b><small>이번 주</small></div></div>
 <div class="wstats"><div><b id="wkReps">0</b><small>이번 주 반복</small></div><div><b id="wkTime">0분</b><small>이번 주 운동 시간</small></div><p>목표 주 3회</p></div>
 </section>
 <div class="wtile">
-<div class="wthead"><svg viewBox="0 0 200 446" class="mini" aria-hidden="true">
-<defs>
-<g id="mass-h">
-<path d="M100 70 Q108 66 116 68 Q138 71 151 77 Q162 83 163 100 Q168 130 172 165 Q176 185 178 202 L165 205 Q160 186 155 168 Q150 140 140 114 Q136 140 132 172 Q138 186 141 198 Q122 212 100 223 Z"/>
-<path d="M142 201 Q150 224 146 252 Q145 280 138 298 Q127 303 116 298 Q110 291 109 280 Q105 262 104 240 Q103 231 103 227 Q123 216 142 201 Z"/>
-<path d="M110 324 Q117 329 118 350 Q118 368 113 381 Q107 360 110 324 Z"/>
-<path d="M121 317 Q128 323 129 346 Q129 372 125 393 L121 393 Q119 360 121 317 Z"/>
-<path d="M132 315 Q141 329 140 352 Q138 370 133 381 Q131 350 132 315 Z"/>
-</g>
-<g id="tgt-h">
-<path class="ob" d="M122 125 Q131 118 140 115 Q137 140 133 170 Q137 184 140 196 Q122 210 104 219 Q113 210 119 190 Q124 160 122 125 Z"/>
-<path class="ra" d="M100 121 Q114 120 121 124 Q124 160 119 190 Q112 210 100 220 Z"/>
-</g>
-<g id="ln-h">
-<path d="M104 74 Q123 70 145 77"/>
-<path d="M144 78 Q139 93 147 106"/>
-<path d="M101 118 Q118 125 132 119 Q142 113 147 101"/>
-<path d="M148 80 Q160 87 162 104"/>
-<path d="M147 107 Q152 118 158 125"/>
-<path d="M152 121 Q158 142 160 166"/>
-<path d="M159 113 Q166 134 168 160"/>
-<path d="M157 168 Q165 165 172 170"/>
-<path d="M160 175 Q168 187 176 202"/>
-<path d="M166 173 Q173 185 179 198"/>
-<path d="M157 183 Q163 195 168 205"/>
-<path d="M140 116 L131 124"/><path d="M139 127 L130 134"/><path d="M137 138 L129 144"/><path d="M136 149 L129 154"/>
-<path d="M141 112 Q137 140 133 170 Q137 184 140 196"/>
-<path d="M100 121 Q114 120 121 124 Q124 160 119 190 Q112 210 100 220"/>
-<path d="M100 140 Q112 134 122.5 138"/><path d="M100 157 Q112 152 123 155"/><path d="M100 175 Q111 171 122 173"/>
-<path d="M141 206 Q125 246 112 291"/>
-<path d="M128 214 Q135 252 128 296"/>
-<path d="M144 230 Q147 264 136 296"/>
-<path d="M106 233 Q113 256 110 282"/>
-<path d="M114 263 Q123 281 120 298"/>
-</g>
-</defs>
-<path class="sil" d="M100 50 L107 50 Q109 62 116 66 Q138 70 152 76 Q165 82 165 100 Q170 130 174 165 Q178 185 180 203 Q192 214 197 232 Q198 239 193 238 L186 230 Q190 248 192 260 Q191 267 185 265 Q179 256 175 246 Q173 259 169 265 Q164 266 165 257 Q166 240 164 222 Q162 212 162 206 Q158 186 155 168 Q150 140 140 112 Q136 140 132 172 Q140 188 143 205 Q151 226 148 252 Q146 280 139 300 Q141 311 138 321 Q142 350 137 381 L132 398 Q135 412 144 427 Q146 438 136 440 L117 440 Q112 421 116 402 L113 392 Q108 360 111 324 Q108 313 110 300 Q105 270 104 240 Q102 229 100 227 Q98 229 96 240 Q95 270 90 300 Q92 313 89 324 Q92 360 87 392 L84 402 Q88 421 83 440 L64 440 Q54 438 56 427 Q65 412 68 398 L63 381 Q58 350 62 321 Q59 311 61 300 Q54 280 52 252 Q49 226 57 205 Q60 188 68 172 Q64 140 60 112 Q50 140 45 168 Q42 186 38 206 Q38 212 36 222 Q34 240 35 257 Q36 266 31 265 Q27 259 25 246 Q21 256 15 265 Q9 267 8 260 Q10 248 14 230 L7 238 Q2 239 3 232 Q8 214 20 203 Q22 185 26 165 Q30 130 35 100 Q35 82 48 76 Q62 70 84 66 Q91 62 93 50 L100 50 Z"/>
-<g class="mass"><use href="#mass-h"/><use href="#mass-h" transform="translate(200 0) scale(-1 1)"/></g>
-<use href="#tgt-h"/><use href="#tgt-h" transform="translate(200 0) scale(-1 1)"/>
-<g class="lines"><path d="M100 78 L100 221"/><use href="#ln-h"/><use href="#ln-h" transform="translate(200 0) scale(-1 1)"/></g>
-<g class="sk"><path d="M95 54 Q93 62 90 68 M105 54 Q107 62 110 68 M98 60 L99 66 M102 60 L101 66"/><path d="M176 232 L182 258 M171 236 L172 262"/><path d="M24 232 L18 258 M29 236 L28 262"/></g>
-<ellipse class="head" cx="100" cy="28" rx="17" ry="24"/>
-</svg><div><b>앱도미널 크런치</b><small>Matrix Ultra · 복근</small></div></div>
+<div class="wthead"><img class="mphoto" src="data:image/jpeg;base64,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" alt="Matrix Abdominal Crunch Ultra 기구" width="88" height="88"><div><b>앱도미널 크런치</b><small>Matrix Abdominal Crunch Ultra</small></div></div>
 <button class="startbtn" id="startBtn">운동 시작</button>
 <a class="howto" href="#ab-crunch">사용법 보기</a>
 </div>
@@ -276,7 +253,7 @@ ul.bad li::before{content:"✕";position:absolute;left:4px;top:12px;color:var(--
 <ul class="hist" id="hist"></ul>
 <p class="empty" id="empty">아직 기록이 없어요. 첫 운동을 시작해 보세요.</p>
 <button class="exp" id="exportBtn" hidden>기록 내보내기 (CSV)</button>
-<p class="note">기록은 이 기기의 브라우저에만 저장돼요.</p>
+<p class="note" id="storeNote">로그인하면 기록이 클라우드에 저장돼서 다른 기기에서도 볼 수 있어요.</p>
 </main>
 <main id="guide" hidden>
 <a class="back" href="#">← 처음으로</a>
@@ -652,7 +629,7 @@ $('wkTime').textContent=Math.round(wk.reduce((a,h)=>a+h.dur,0)/60)+'분';
 const ul=$('hist');ul.innerHTML='';
 hist.slice(0,30).forEach(h=>{const reps=h.sets.reduce((b,x)=>b+x.reps,0),mw=Math.max(...h.sets.map(x=>x.weight));
 const li=document.createElement('li');li.innerHTML='<div><b>'+dstr(h.date)+'</b><span>'+h.sets.length+'세트 · '+reps+'회 · 최고 '+mw+'kg · '+fmt(h.dur)+'</span></div><button aria-label="기록 삭제">✕</button>';
-li.querySelector('button').onclick=()=>{if(confirm('이 기록을 삭제할까요?')){hist=hist.filter(x=>x.id!==h.id);LS.set('gym.history',hist);renderHome();}};ul.appendChild(li);});
+li.querySelector('button').onclick=()=>{if(confirm('이 기록을 삭제할까요?')){hist=hist.filter(x=>x.id!==h.id);LS.set('gym.history',hist);renderHome();window.cloud&&window.cloud.del(h.id);}};ul.appendChild(li);});
 $('empty').hidden=hist.length>0;$('exportBtn').hidden=!hist.length;}
 let pacer=null,lastCycle=0;
 function stopPacer(){pacer=null;$('pacerBtn').setAttribute('aria-pressed','false');$('pacerBtn').textContent='템포 켜기';$('pTxt').textContent='템포 가이드 꺼짐';document.querySelectorAll('.pbar b').forEach(b=>b.style.width='0');}
@@ -691,12 +668,50 @@ else{S.pausedAt=now();if(S.mode==='rest')S.restLeft=(S.restEnd-now())/1000;}save
 $('endBtn').onclick=()=>{if(S.mode==='work'&&S.reps>0){S.sets.push({reps:S.reps,weight:S.weight});S.reps=0;}
 if(!S.sets.length){if(confirm('기록된 세트가 없어요. 운동을 끝낼까요?')){S=null;LS.set('gym.active',null);close();}return;}
 S.dur=elapsed();if(S.pausedAt){S.paused+=now()-S.pausedAt;S.pausedAt=0;}stopPacer();S.mode='sum';save();show();};
-$('sumSave').onclick=()=>{hist.unshift({id:now(),date:S.start,dur:Math.round(S.dur),sets:S.sets,ex:'ab-crunch'});LS.set('gym.history',hist);S=null;LS.set('gym.active',null);close();};
+$('sumSave').onclick=()=>{const rec={id:now(),date:S.start,dur:Math.round(S.dur),sets:S.sets,ex:'ab-crunch'};hist.unshift(rec);LS.set('gym.history',hist);window.cloud&&window.cloud.put(rec);S=null;LS.set('gym.active',null);close();};
 $('sumDiscard').onclick=()=>{if(confirm('이번 운동을 저장하지 않을까요?')){S=null;LS.set('gym.active',null);close();}};
 $('exportBtn').onclick=()=>{const rows=[['날짜','시작시각','세트','반복','무게(kg)','운동시간(초)']];
 hist.slice().reverse().forEach(h=>{const d=new Date(h.date);h.sets.forEach((x,i)=>rows.push([d.toLocaleDateString('ko-KR'),d.toLocaleTimeString('ko-KR'),i+1,x.reps,x.weight,h.dur]));});
 const csv='\ufeff'+rows.map(r=>r.join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='운동기록.csv';document.body.appendChild(a);a.click();a.remove();};
+window.gymHist={get:()=>hist.slice(),set:a=>{hist=a;LS.set('gym.history',hist);renderHome();}};
 renderHome();if(S)open();
+})();
+</script>
+<script>
+(async function(){
+const txt=document.getElementById('syncTxt'),btn=document.getElementById('syncBtn');
+const dot=on=>'<span class="dot'+(on?' on':'')+'"></span>';
+const CFG=window.FIREBASE_CONFIG||{};
+if(!CFG.apiKey||!CFG.projectId){txt.innerHTML=dot(false)+'기기에만 저장 중';return;}
+if(location.protocol==='file:'){txt.innerHTML=dot(false)+'파일로 열면 클라우드를 쓸 수 없어요';return;}
+const V='10.12.2',B='https://www.gstatic.com/firebasejs/'+V+'/';
+let A,AU,FS;
+try{[A,AU,FS]=await Promise.all([import(B+'firebase-app.js'),import(B+'firebase-auth.js'),import(B+'firebase-firestore.js')]);}
+catch(e){txt.innerHTML=dot(false)+'이 화면에서는 클라우드에 연결할 수 없어요';return;}
+const app=A.initializeApp(CFG),auth=AU.getAuth(app),db=FS.getFirestore(app);
+const col=uid=>FS.collection(db,'users',uid,'workouts');
+let uid=null,queue=[];
+function fail(e){console.error(e);txt.innerHTML=dot(false)+'동기화 실패 · 기기에 저장됨';}
+window.cloud={
+put(rec){if(!uid)return;FS.setDoc(FS.doc(col(uid),String(rec.id)),rec).then(()=>txt.innerHTML=dot(true)+'클라우드 저장됨').catch(fail);},
+del(id){if(!uid)return;FS.deleteDoc(FS.doc(col(uid),String(id))).catch(fail);}
+};
+async function sync(user){
+txt.innerHTML=dot(false)+'동기화 중…';
+try{const snap=await FS.getDocs(col(user.uid));const remote=new Map();snap.forEach(d=>remote.set(String(d.id),d.data()));
+const local=window.gymHist.get();
+for(const r of local){if(!remote.has(String(r.id))){await FS.setDoc(FS.doc(col(user.uid),String(r.id)),r);remote.set(String(r.id),r);}}
+const merged=[...remote.values()].sort((a,b)=>b.date-a.date);window.gymHist.set(merged);
+txt.innerHTML=dot(true)+(user.displayName||user.email||'로그인됨')+' · 클라우드 동기화됨';}
+catch(e){fail(e);}}
+AU.onAuthStateChanged(auth,user=>{
+if(user){uid=user.uid;btn.textContent='로그아웃';btn.hidden=false;sync(user);}
+else{uid=null;btn.textContent='구글로 로그인';btn.hidden=false;txt.innerHTML=dot(false)+'기기에만 저장 중';}});
+btn.onclick=async()=>{
+if(uid){if(confirm('로그아웃할까요? 이 기기의 기록은 그대로 남아요.'))await AU.signOut(auth);return;}
+const pv=new AU.GoogleAuthProvider();
+try{await AU.signInWithPopup(auth,pv);}
+catch(e){if(e&&e.code==='auth/popup-blocked'){await AU.signInWithRedirect(auth,pv);}else if(e&&e.code!=='auth/popup-closed-by-user'){alert('로그인하지 못했어요: '+(e.code||e.message));}}};
 })();
 </script>
 </body>
