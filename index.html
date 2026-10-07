@@ -80,6 +80,21 @@ p{margin:0 0 12px}
 .sw{display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--coral);margin-right:6px;vertical-align:1px}
 .sw.lt{background:var(--musc)}
 .live{margin:0;font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums}
+.float{position:fixed;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:30;width:min(88vw,380px);background:#000;border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,.28)}
+.float[hidden]{display:none}
+.fbar{display:flex;align-items:center;justify-content:space-between;padding:2px 2px 2px 10px;background:var(--panel);color:var(--ink);cursor:move;touch-action:none;user-select:none;-webkit-user-select:none;font-size:12px;font-weight:500}
+.fbar span{display:flex;align-items:center;gap:6px}
+.fbar i{width:7px;height:7px;border-radius:50%;background:#C4302B}
+.fbar button{min-height:34px;min-width:40px;padding:0 10px;border:0;font-size:15px;color:var(--sub)}
+.fvid{position:relative;aspect-ratio:16/9}
+.fbk{position:absolute;inset:0;display:grid;place-content:center;gap:10px;text-align:center;color:#fff;font-size:13px;padding:12px}
+.fbk p{margin:0}
+.fbk a{justify-self:center;background:#C4302B;color:#fff;text-decoration:none;padding:7px 14px;border-radius:8px;font-weight:500}
+.fvid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.float.drag .fbk{position:absolute;inset:0;display:grid;place-content:center;gap:10px;text-align:center;color:#fff;font-size:13px;padding:12px}
+.fbk p{margin:0}
+.fbk a{justify-self:center;background:#C4302B;color:#fff;text-decoration:none;padding:7px 14px;border-radius:8px;font-weight:500}
+.fvid iframe{pointer-events:none}
 .tag{position:absolute;left:12px;top:12px;background:var(--sig);color:#1A1205;font-size:13px;font-weight:500;padding:4px 10px;border-radius:6px}
 .fb{padding:40px 16px;text-align:center;color:var(--sub)}
 canvas{width:100%;height:360px;display:block;touch-action:none;cursor:grab}
@@ -211,6 +226,10 @@ ul.bad li::before{content:"✕";position:absolute;left:4px;top:12px;color:var(--
 <p class="hint">1회 약 5초, 1세트 약 1분, 전체 약 5분이면 끝나요.</p>
 <p class="note">허리가 아프면 무게와 범위를 줄이세요.</p>
 </main>
+<div class="float" id="yt" role="dialog" aria-label="시연영상 미니 창" hidden>
+<div class="fbar" id="ytBar"><span><i></i>시연영상</span><button id="ytX" aria-label="시연영상 닫기">✕</button></div>
+<div class="fvid" id="ytBox"></div>
+</div>
 
 <script>
 (function(){
@@ -397,6 +416,30 @@ asv.style.setProperty('--rao',(0.6+0.4*c).toFixed(3));asv.style.setProperty('--o
 live.textContent=(p.bad?'틀린 자세 · 복직근 ':'복직근 수축 ')+Math.round(c*100)+'%';}
 requestAnimationFrame(loop);}
 requestAnimationFrame(loop);
+})();
+</script>
+<script>
+(function(){
+const URL_='https://youtu.be/HFspzTiRX5w',EMB='https://www.youtube-nocookie.com/embed/HFspzTiRX5w?autoplay=1&playsinline=1&rel=0';
+const btn=document.querySelector('a.ytbtn'),win=document.getElementById('yt'),box=document.getElementById('ytBox'),bar=document.getElementById('ytBar'),x=document.getElementById('ytX');
+if(!btn||!win)return;
+let blocked=false;
+document.addEventListener('securitypolicyviolation',e=>{if(/frame/.test(e.violatedDirective||e.effectiveDirective||'')&&/youtube/.test(e.blockedURI||'')){blocked=true;fallback();}});
+function fallback(){box.innerHTML='<div class="fbk"><p>이 화면에서는 영상을 바로 재생할 수 없어요.</p><a href="'+URL_+'" target="_blank" rel="noopener">유튜브에서 보기</a></div>';win.hidden=false;}
+function open(){if(blocked||location.protocol==='file:'){fallback();return;}
+if(!box.firstChild){const f=document.createElement('iframe');f.src=EMB;f.title='앱도미널 크런치 시연영상';f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;f.referrerPolicy='strict-origin-when-cross-origin';box.appendChild(f);}
+win.hidden=false;}
+function close(){win.hidden=true;box.innerHTML='';}
+btn.addEventListener('click',e=>{e.preventDefault();open();});
+x.addEventListener('click',close);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!win.hidden)close();});
+let d=null;
+bar.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;const r=win.getBoundingClientRect();d={dx:e.clientX-r.left,dy:e.clientY-r.top};
+win.style.left=r.left+'px';win.style.top=r.top+'px';win.style.right='auto';win.style.bottom='auto';win.classList.add('drag');bar.setPointerCapture(e.pointerId);});
+bar.addEventListener('pointermove',e=>{if(!d)return;const w=win.offsetWidth,h=win.offsetHeight;
+win.style.left=Math.max(4,Math.min(innerWidth-w-4,e.clientX-d.dx))+'px';win.style.top=Math.max(4,Math.min(innerHeight-h-4,e.clientY-d.dy))+'px';});
+const end=()=>{d=null;win.classList.remove('drag');};bar.addEventListener('pointerup',end);bar.addEventListener('pointercancel',end);
+addEventListener('resize',()=>{if(win.style.left){const w=win.offsetWidth,h=win.offsetHeight;win.style.left=Math.max(4,Math.min(innerWidth-w-4,parseFloat(win.style.left)))+'px';win.style.top=Math.max(4,Math.min(innerHeight-h-4,parseFloat(win.style.top)))+'px';}});
 })();
 </script>
 </body>
