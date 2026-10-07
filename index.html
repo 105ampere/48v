@@ -963,7 +963,7 @@ const cv=document.getElementById('cv2');
 const gl=cv.getContext('webgl',{antialias:true,alpha:true,stencil:true,premultipliedAlpha:false});
 if(!gl){cv.hidden=true;document.getElementById('fb2').hidden=false;return;}
 const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
-const st={yaw:-0.85,pitch:0.22,play:!reduce,bad:false,inc:10,ty:null,tp:null};
+const st={yaw:1.0,pitch:0.2,play:!reduce,bad:false,inc:10,ty:null,tp:null};
 let el=reduce?0.3:0,last=performance.now(),W=0,H=0,VP;
 function sh(t,s){const x=gl.createShader(t);gl.shaderSource(x,s);gl.compileShader(x);return x;}
 const pg=gl.createProgram();
@@ -1008,22 +1008,32 @@ function setEll(o,c,d){o.p=c;o.q=qFrom(UP,d);}
 function bx(w,h,d,m,p){const o=mesh(BOX,m);o.s=[w,h,d];o.p=p;return o;}
 function cyl(r,h,m,p,ax){const o=mesh(CYL,m);o.s=[r,h,r];o.p=p;o.q=qFrom(UP,ax);return o;}
 
-const floor=mesh(DISC,mFloor,false);floor.s=[1.05,1,1.05];floor.p=[0.05,0,0];
-// base frame
-[[[-0.55,0.05,-0.2],[0.6,0.05,-0.2]],[[-0.55,0.05,0.2],[0.6,0.05,0.2]],[[-0.55,0.05,-0.2],[-0.55,0.05,0.2]],[[0.6,0.05,-0.2],[0.6,0.05,0.2]]].forEach(p=>setCap(cap(0.035,mMetal),p[0],p[1]));
-const shroud=bx(0.34,0.44,0.38,mPad,[0.52,0.25,0]);
-// front column + console
-setCap(cap(0.05,mMetal),[0.58,0.06,0],[0.5,1.18,0]);
-const con=bx(0.07,0.26,0.4,mPad,[0.5,1.3,0]);con.q=qAx([0,0,1],0.42);
-const scr=bx(0.012,0.2,0.32,mScreen,[0.465,1.31,0]);scr.q=qAx([0,0,1],0.42);
-const led=bx(0.006,0.04,0.12,mSig,[0.458,1.35,0]);led.q=qAx([0,0,1],0.42);
-// stationary handles
-[-1,1].forEach(s=>{setCap(cap(0.022,mMetal),[0.5,1.12,0.08*s],[0.36,1.06,0.24*s]);setCap(cap(0.022,mMetal),[0.36,1.06,0.24*s],[0.16,1.04,0.25*s]);
-setCap(cap(0.03,mPad,true),[0.3,1.055,0.245*s],[0.18,1.042,0.25*s]);});
-// pivots for pedal links
-const piv=[0.36,0.42];
-setCap(cap(0.035,mMetal,false),[piv[0],piv[1],-0.2],[piv[0],piv[1],0.2]);
-const pedals=[-1,1].map(s=>({p:bx(0.34,0.035,0.13,mPad,[0,0,0]),l:cap(0.022,mMetal),r:cap(0.02,mMetal)}));
+const floor=mesh(DISC,mFloor,false);floor.s=[1.15,1,1.15];floor.p=[0.05,0,0];
+const mSilver=mat(.7,'--steel');MATS.push(mSilver);mSilver.c=lin('#A7AFB5');
+function chain(pts,r,m){for(let i=0;i<pts.length-1;i++)setCap(cap(r,m),pts[i],pts[i+1]);}
+// big silver arc beam (centre) from rear foot over to front foot
+chain([[-0.9,0.04,0],[-0.55,0.32,0],[-0.15,0.6,0],[0.25,0.78,0],[0.62,0.74,0],[0.92,0.48,0],[1.08,0.05,0]],0.07,mSilver);
+setCap(cap(0.035,mSilver),[-0.9,0.04,-0.16],[-0.9,0.04,0.16]);setCap(cap(0.035,mSilver),[1.08,0.05,-0.16],[1.08,0.05,0.16]);
+// front drive housing + flywheel
+const hous=ell(0.26,0.34,0.2,mPad);hous.p=[0.72,0.5,0];
+[-1,1].forEach(s=>{const fw=cyl(0.17,0.02,mPad,[0.74,0.48,0.2*s],[0,0,1]);});
+// console mast + console
+setCap(cap(0.045,mPad),[0.62,0.8,0],[0.55,1.42,0]);
+const tray=bx(0.24,0.06,0.3,mPad,[0.55,1.02,0]);
+const con=bx(0.07,0.32,0.46,mPad,[0.6,1.58,0]);con.q=qAx([0,0,1],0.32);
+const scr=bx(0.012,0.25,0.38,mScreen,[0.565,1.59,0]);scr.q=qAx([0,0,1],0.32);
+const led=bx(0.006,0.05,0.2,mSig,[0.556,1.66,0]);led.q=qAx([0,0,1],0.32);
+// stationary handlebars: long bars from mast back toward user, plus upright horns near console
+[-1,1].forEach(s=>{chain([[0.55,1.1,0.06*s],[0.32,1.08,0.2*s],[0.06,1.02,0.25*s]],0.022,mPad);
+setCap(cap(0.03,mPad),[0.06,1.02,0.25*s],[-0.02,1.1,0.26*s]);
+chain([[0.52,1.3,0.08*s],[0.42,1.42,0.2*s],[0.36,1.62,0.24*s]],0.022,mPad);});
+// side handrails (U open at rear) at hip height + legs
+[-1,1].forEach(s=>{const z=0.33*s;setCap(cap(0.03,mPad),[-0.55,0.95,z],[0.2,0.95,z]);
+setCap(cap(0.03,mSilver),[0.12,0.92,z],[-0.42,0.04,0.38*s]);setCap(cap(0.03,mSilver),[-0.52,0.92,z],[-0.82,0.04,0.3*s]);
+setCap(cap(0.02,mPad),[-0.2,0.95,z],[-0.2,0.95,0.12*s]);});
+setCap(cap(0.03,mPad),[0.2,0.95,-0.33],[0.2,0.95,0.33]);
+const PIV=[-0.2,0.95];
+const pedals=[-1,1].map(s=>({p:bx(0.34,0.035,0.13,mPad,[0,0,0]),l:cap(0.024,mPad),r:cap(0.018,mMetal)}));
 // body
 const pelvis=ell(0.12,0.1,0.16,mBody),belly=ell(0.1,0.15,0.14,mBody),chest=ell(0.115,0.15,0.18,mBody);
 const shoulders=cap(0.055,mBody),neck=cap(0.042,mBody),head=mesh(SPH,mBody);head.s=[0.1,0.1,0.1];
@@ -1045,35 +1055,37 @@ gl.uniform1f(U.uSh,shadow?1:0);gl.uniform1f(U.uA,a);gl.drawElements(gl.TRIANGLES
 
 function ik(H,A,L1,L2){const dx=A[0]-H[0],dy=A[1]-H[1];let d=Math.hypot(dx,dy);const ux=dx/d,uy=dy/d;d=Math.min(d,L1+L2-0.002);
 const a=(L1*L1-L2*L2+d*d)/(2*d),h=Math.sqrt(Math.max(0,L1*L1-a*a));return [H[0]+a*ux-h*uy,H[1]+a*uy+h*ux,A[2]];}
-function pedalPos(s,inc){const dx=0.58-0.012*inc,dy=0.06+0.0105*inc;return [0.27-dx*s,0.12+dy*(1-s)+0.05*Math.sin(Math.PI*s)];}
+function pedalPos(w,inc){const amp=0.4-0.008*inc,th=amp*Math.cos(w),R=0.76+0.035*Math.sin(w);
+const x=PIV[0]+R*Math.sin(th),y=PIV[1]-R*Math.cos(th);return [x,y+(x-PIV[0])*0.03*inc];}
 function pose(ph,bad,inc){
-const sL=(1-Math.cos(2*Math.PI*ph))/2,sR=1-sL;
-const PL=pedalPos(sL,inc),PR=pedalPos(sR,inc);
-const bob=0.012*Math.cos(4*Math.PI*ph);
+const w=2*Math.PI*ph;const PL=pedalPos(w,inc),PR=pedalPos(w+Math.PI,inc);
+const bob=0.012*Math.cos(2*w);
 const lean=bad?0.5:0.1;
-const Hp=[bad?-0.12:-0.05,0.98+bob+(bad?-0.04:0),0];
+const Hp=[bad?-0.3:-0.2,1.03+bob+(bad?-0.05:0)+0.004*inc,0];
 const segs=[0.17,0.17,0.16];const sp=[Hp];let p=Hp;
 segs.forEach(l=>{p=ad(p,[l*Math.sin(lean),l*Math.cos(lean),0]);sp.push(p);});
 const top=sp[3],u=[Math.sin(lean),Math.cos(lean),0];
 setEll(pelvis,ad(Hp,[0,0.03,0]),u);setEll(belly,mid(sp[0],sp[2]),u);setEll(chest,ad(mid(sp[2],sp[3]),[0.01,0,0]),u);
 const shc=ad(top,u,-0.035);setCap(shoulders,ad(shc,[0,0,-0.17]),ad(shc,[0,0,0.17]));
 const nk=ad(top,u,0.1);setCap(neck,ad(top,u,0.02),nk);head.p=ad(ad(nk,u,0.085),[0.02,0,0],1);
-[[PL,-1,sL],[PR,1,sR]].forEach(([P,s,sv],k)=>{
+[[PL,-1],[PR,1]].forEach(([P,s],k)=>{
 const ped=pedals[k];ped.p.p=[P[0],P[1],0.12*s];
-const front=[P[0]+0.16,P[1],0.12*s];setCap(ped.l,front,[piv[0],piv[1],0.17*s]);setCap(ped.r,[P[0]-0.15,P[1]-0.01,0.12*s],[P[0]-0.15,0.07,0.15*s]);
+setCap(ped.l,[PIV[0],PIV[1],0.12*s],[P[0]-0.04,P[1]+0.02,0.12*s]);
+setCap(ped.r,[P[0]+0.14,P[1]-0.01,0.12*s],[0.6,0.42,0.12*s]);
 const A=[P[0]-0.03,P[1]+0.075,0.11*s],H=[Hp[0],Hp[1],0.1*s];
 const K=ik(H,A,0.44,0.44);
 const Lg=legs[k];setCap(Lg.t,H,K);setCap(Lg.s,K,A);Lg.f.p=[P[0]+0.02,P[1]+0.04,0.11*s];
 setEll(Lg.g,ad(H,[-0.06,0.0,0]),[0,1,0]);
-const Ar=arms[k],Sh=ad(shc,[0,0,0.17*s]),G=[0.22,1.05,0.24*s];
-const E=bad?ad(mid(Sh,G),[0.0,0.02,0.04*s]):ad(mid(Sh,G),[-0.03,-0.07,0.05*s]);
+const Ar=arms[k],Sh=ad(shc,[0,0,0.17*s]),G=bad?[0.08,1.03,0.25*s]:[-0.01,1.08,0.26*s];
+const E=bad?ad(mid(Sh,G),[0.0,0.02,0.04*s]):ad(mid(Sh,G),[-0.04,-0.06,0.05*s]);
 setCap(Ar.u,Sh,E);setCap(Ar.f,E,G);Ar.h.p=G;
 });
-const push=t=>Math.max(0,t);
-const iL=push(Math.sin(2*Math.PI*ph)),iR=push(-Math.sin(2*Math.PI*ph));
+const back=x=>Math.max(0,x);
+const iL=back(Math.sin(w)),iR=back(-Math.sin(w));
 const sc=SIGC(),base=lin(css('--figure'));const mix=(i)=>base.map((b,j)=>b+(sc[j]-b)*i*(bad?0.25:0.85));
 mLegL.c=mix(iL);mLegR.c=mix(iR);mLegL.e=bad?0:iL*0.35;mLegR.e=bad?0:iR*0.35;
-return Math.abs(Math.sin(2*Math.PI*ph));}
+return Math.abs(Math.sin(w));}
+
 
 function rs(){const d=Math.min(2,window.devicePixelRatio||1);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*d;cv.height=H*d;}
 rs();window.addEventListener('resize',rs);
@@ -1098,12 +1110,12 @@ function hl(k){const o=(st.bad?0.45:0.6+0.4*k).toFixed(3);figs.forEach(f=>f&&f.s
 function frame(now){const dt=Math.min(0.05,(now-last)/1000);last=now;if(!cv.clientWidth){requestAnimationFrame(frame);return;}if(st.play)el+=dt;
 const ph=(el%T)/T;const k=pose(ph,st.bad,st.inc);hl(k);
 if(st.ty!==null){st.yaw+=(st.ty-st.yaw)*0.08;st.pitch+=(st.tp-st.pitch)*0.08;if(Math.abs(st.ty-st.yaw)<0.002)st.ty=null;}
-const r=4.3,cp=Math.cos(st.pitch),tg=[0.05,0.9,0];
+const r=4.8,cp=Math.cos(st.pitch),tg=[0.08,0.85,0];
 const eye=[tg[0]+r*cp*Math.cos(st.yaw),tg[1]+r*Math.sin(st.pitch),tg[2]+r*cp*Math.sin(st.yaw)];
 VP=mul(persp(30*Math.PI/180,W/H,0.1,50),look(eye,tg));
 gl.viewport(0,0,cv.width,cv.height);gl.clearColor(0,0,0,0);gl.clearStencil(0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT|gl.STENCIL_BUFFER_BIT);
 render(VP,eye);
-place(lbls[0],[0.46,1.42,0.2]);place(lbls[1],[0.2,1.05,0.27]);place(lbls[2],[-0.1,0.2,0.2]);window.layoutCallouts&&window.layoutCallouts(cv,CO,W,H);CO.length=0;
+place(lbls[0],[0.56,1.72,0.2]);place(lbls[1],[-0.02,1.1,0.27]);place(lbls[2],[-0.2,0.2,0.2]);window.layoutCallouts&&window.layoutCallouts(cv,CO,W,H);CO.length=0;
 requestAnimationFrame(frame);}
 requestAnimationFrame(frame);
 let drag=null;
@@ -1114,8 +1126,8 @@ const bP=document.getElementById('aPlay');const setPlay=()=>{bP.textContent=st.p
 bP.onclick=()=>{st.play=!st.play;setPlay();};
 const bB=document.getElementById('aBad');
 bB.onclick=()=>{st.bad=!st.bad;bB.setAttribute('aria-pressed',st.bad);bB.textContent=st.bad?'올바른 자세 보기':'흔한 실수 비교';badTag.hidden=!st.bad;};
-document.getElementById('aSide').onclick=()=>{st.ty=-Math.PI/2;st.tp=0.12;};
-document.getElementById('aObl').onclick=()=>{st.ty=-0.85;st.tp=0.22;};
+document.getElementById('aSide').onclick=()=>{st.ty=Math.PI/2;st.tp=0.12;};
+document.getElementById('aObl').onclick=()=>{st.ty=1.0;st.tp=0.2;};
 incR.addEventListener('input',()=>{st.inc=+incR.value;updZone();});
 zEls.forEach((e,i)=>e.addEventListener('click',()=>{st.inc=[3,10,17][i];incR.value=st.inc;updZone();}));
 })();
